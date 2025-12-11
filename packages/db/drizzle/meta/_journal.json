@@ -15,6 +15,13 @@
       "when": 1765464136839,
       "tag": "0001_nervous_speedball",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1765465394353,
+      "tag": "0002_greedy_nighthawk",
+      "breakpoints": true
     }
   ]
 }

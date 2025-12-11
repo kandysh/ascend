@@ -1,4 +1,5 @@
 import { createRedisClient } from '@ascend/redis-client';
+import { createNatsClient } from '@ascend/nats-client';
 import cors from '@fastify/cors';
 import env from '@fastify/env';
 import swagger from '@fastify/swagger';
@@ -21,6 +22,7 @@ declare module 'fastify' {
     config: {
       PORT: number;
       REDIS_URL: string;
+      NATS_URL: string;
       INTERNAL_API_SECRET: string;
     };
   }
@@ -33,13 +35,16 @@ declare module 'fastify' {
 
 const envSchema = {
   type: 'object',
-  required: ['REDIS_URL', 'INTERNAL_API_SECRET'],
+  required: ['REDIS_URL', 'NATS_URL', 'INTERNAL_API_SECRET'],
   properties: {
     PORT: {
       type: 'number',
       default: 3002,
     },
     REDIS_URL: {
+      type: 'string',
+    },
+    NATS_URL: {
       type: 'string',
     },
     INTERNAL_API_SECRET: {
@@ -94,6 +99,7 @@ async function buildServer() {
   });
 
   createRedisClient(fastify.config.REDIS_URL);
+  await createNatsClient(fastify.config.NATS_URL);
 
   fastify.addHook('preHandler', async (request, reply) => {
     const internalSecret = request.headers['x-internal-secret'];

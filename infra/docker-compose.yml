@@ -32,6 +32,19 @@ services:
       timeout: 5s
       retries: 5
 
+  nats:
+    image: nats:latest
+    container_name: ascend-nats
+    ports:
+      - '4222:4222' # Client connections
+      - '8222:8222' # HTTP monitoring
+    command: ['-js', '-m', '8222'] # Enable JetStream and monitoring
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:8222/healthz']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Optional: Redis Commander for Redis GUI
   redis-commander:
     image: rediscommander/redis-commander:latest

@@ -49,9 +49,9 @@
 
 ## Phase 5 — Worker & Event Bus (Day 10–13)
 
-- [ ] Create Worker service
-- [ ] Subscribe to NATS topics
-- [ ] Persist score events → Postgres
+- [x] Create Worker service
+- [x] Subscribe to NATS topics
+- [x] Persist score events → Postgres
 - [ ] Implement daily snapshots
 - [ ] Implement usage counters
 - [ ] Implement fraud detection rules

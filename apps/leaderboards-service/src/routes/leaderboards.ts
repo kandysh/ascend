@@ -1,5 +1,11 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getDbClient } from '@ascend/db';
+import {
+  publishEvent,
+  LeaderboardCreatedEvent,
+  LeaderboardDeletedEvent,
+  EventSubjects,
+} from '@ascend/nats-client';
 
 interface CreateLeaderboardBody {
   name: string;
@@ -92,7 +98,7 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
         `;
 
         publishLeaderboardEvent({
-          type: 'leaderboard.created',
+          type: EventSubjects.LEADERBOARD_CREATED,
           leaderboardId: leaderboard.id,
           projectId,
           name: leaderboard.name,
@@ -336,7 +342,7 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
         }
 
         publishLeaderboardEvent({
-          type: 'leaderboard.deleted',
+          type: EventSubjects.LEADERBOARD_DELETED,
           leaderboardId: id,
           projectId,
           name: deletedLeaderboard.name,
@@ -355,12 +361,11 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
   );
 }
 
-function publishLeaderboardEvent(event: {
-  type: string;
-  leaderboardId: string;
-  projectId: string;
-  name: string;
-  timestamp: string;
-}) {
-  console.log(`[EVENT] ${event.type}`, JSON.stringify(event));
+function publishLeaderboardEvent(
+  event: LeaderboardCreatedEvent | LeaderboardDeletedEvent,
+) {
+  // Publish to NATS
+  publishEvent(event.type, event).catch((error) => {
+    console.error(`[EVENT] Failed to publish ${event.type}:`, error);
+  });
 }

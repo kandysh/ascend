@@ -1,4 +1,5 @@
 import { createDbClient } from '@ascend/db';
+import { createNatsClient } from '@ascend/nats-client';
 import cors from '@fastify/cors';
 import env from '@fastify/env';
 import swagger from '@fastify/swagger';
@@ -21,6 +22,7 @@ declare module 'fastify' {
     config: {
       PORT: number;
       DATABASE_URL: string;
+      NATS_URL: string;
       INTERNAL_API_SECRET: string;
     };
   }
@@ -33,13 +35,16 @@ declare module 'fastify' {
 
 const envSchema = {
   type: 'object',
-  required: ['DATABASE_URL', 'INTERNAL_API_SECRET'],
+  required: ['DATABASE_URL', 'NATS_URL', 'INTERNAL_API_SECRET'],
   properties: {
     PORT: {
       type: 'number',
       default: 3003,
     },
     DATABASE_URL: {
+      type: 'string',
+    },
+    NATS_URL: {
       type: 'string',
     },
     INTERNAL_API_SECRET: {
@@ -94,6 +99,7 @@ async function buildServer() {
   });
 
   createDbClient(fastify.config.DATABASE_URL);
+  await createNatsClient(fastify.config.NATS_URL);
 
   fastify.addHook('preHandler', async (request, reply) => {
     const internalSecret = request.headers['x-internal-secret'];

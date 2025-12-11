@@ -1,5 +1,10 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getRedisClient } from '@ascend/redis-client';
+import {
+  publishEvent,
+  ScoreUpdatedEvent,
+  EventSubjects,
+} from '@ascend/nats-client';
 
 interface ScoreUpdateBody {
   leaderboardId: string;
@@ -209,14 +214,9 @@ export async function scoresRoutes(fastify: FastifyInstance) {
   );
 }
 
-function publishScoreEvent(event: {
-  tenantId: string;
-  projectId: string;
-  leaderboardId: string;
-  userId: string;
-  score: number;
-  increment: boolean;
-  timestamp: string;
-}) {
-  console.log('[EVENT] score.updated', JSON.stringify(event));
+function publishScoreEvent(event: ScoreUpdatedEvent) {
+  // Publish to NATS
+  publishEvent(EventSubjects.SCORE_UPDATED, event).catch((error) => {
+    console.error('[EVENT] Failed to publish score.updated:', error);
+  });
 }

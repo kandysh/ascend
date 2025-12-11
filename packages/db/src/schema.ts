@@ -86,3 +86,19 @@ export type NewLeaderboard = typeof leaderboards.$inferInsert;
 
 export type Season = typeof seasons.$inferSelect;
 export type NewSeason = typeof seasons.$inferInsert;
+
+export const scoreEvents = pgTable('score_events', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  tenantId: uuid('tenant_id').notNull(),
+  projectId: uuid('project_id')
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  leaderboardId: text('leaderboard_id').notNull(),
+  userId: text('user_id').notNull(),
+  score: integer('score').notNull(),
+  increment: boolean('increment').notNull().default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export type ScoreEvent = typeof scoreEvents.$inferSelect;
+export type NewScoreEvent = typeof scoreEvents.$inferInsert;

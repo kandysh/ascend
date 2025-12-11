@@ -85,6 +85,7 @@ pnpm service:auth          # Start auth service
 pnpm service:gateway       # Start gateway
 pnpm service:scores        # Start scores service
 pnpm service:leaderboards  # Start leaderboards service
+pnpm service:worker        # Start worker service
 
 # Development
 pnpm build             # Build all packages
@@ -158,7 +159,8 @@ curl http://localhost:3000/leaderboards/test \
 - [x] **Phase 2** - API Gateway
 - [x] **Phase 3** - Scores Service
 - [x] **Phase 4** - Leaderboards Service
-- [ ] **Phase 5+** - Worker, Billing, Analytics, Dashboard
+- [x] **Phase 5** - Worker & Event Bus (NATS)
+- [ ] **Phase 6+** - Billing, Analytics, Dashboard
 
 See [Roadmap](./docs/roadmap.md) for details.
 
