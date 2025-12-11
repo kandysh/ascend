@@ -41,9 +41,6 @@ importers:
       '@ascend/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@ascend/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@ascend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -115,9 +112,6 @@ importers:
       '@ascend/redis-client':
         specifier: workspace:*
         version: link:../../packages/redis-client
-      '@ascend/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@ascend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -155,9 +149,6 @@ importers:
 
   packages/db:
     dependencies:
-      '@ascend/types':
-        specifier: workspace:*
-        version: link:../types
       dotenv:
         specifier: ^16.4.7
         version: 16.6.1

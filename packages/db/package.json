@@ -19,7 +19,6 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@ascend/types": "workspace:*",
     "dotenv": "^16.4.7",
     "postgres": "^3.4.5"
   },
