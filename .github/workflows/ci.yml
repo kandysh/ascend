@@ -9,6 +9,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,5 +33,5 @@ jobs:
 
       - name: Run database migrations
         env:
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pnpm db:migrate

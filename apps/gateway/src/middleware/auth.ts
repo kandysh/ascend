@@ -15,6 +15,11 @@ export async function authMiddleware(
     return;
   }
 
+  // Skip auth for /auth routes (tenant/project/api-key management)
+  if (request.url.startsWith('/auth')) {
+    return;
+  }
+
   const apiKey = request.headers['x-api-key'] as string;
 
   if (!apiKey) {

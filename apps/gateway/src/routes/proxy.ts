@@ -10,6 +10,15 @@ export const proxyRoutes: FastifyPluginAsync = async (fastify) => {
     keyGenerator: (request) => request.tenantId || 'anonymous',
   });
 
+  // Auth Service routes (no API key required for tenant/project/api-key creation)
+  // Gateway: /auth/tenants -> Auth Service: /tenants
+  await fastify.register(httpProxy, {
+    upstream: fastify.config.AUTH_SERVICE_URL,
+    prefix: '/auth',
+    rewritePrefix: '',
+    http2: false,
+  });
+
   // Scores Service routes
   await fastify.register(httpProxy, {
     upstream: fastify.config.SCORES_SERVICE_URL,
