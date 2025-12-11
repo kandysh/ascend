@@ -55,9 +55,6 @@
 - [x] Event types centralized in NATS package
 - [x] Type-safe pub/sub across all services
 
-**Note:** Advanced features (snapshots, usage counters, fraud detection, TTL eviction)
-will be implemented in Phase 6+ once Analytics service is built to showcase them.
-
 ## Phase 6 — Billing & Usage (Day 13–15) ✅
 
 - [x] Implement Billing service
@@ -84,8 +81,14 @@ will be implemented in Phase 6+ once Analytics service is built to showcase them
 - [ ] Billing page
 - [ ] Grafana embed (logs, traces, metrics)
 
-## Phase 9 — Observability (Day 22–24)
+## Phase 8.5 — Advanced Features (post-Analytics)
+- [ ] Implement leaderboard snapshots for efficient restores and history
+- [ ] Add per-tenant usage counters and high-resolution metering
+- [ ] Implement fraud detection and anomaly scoring pipelines
+- [ ] Add TTL eviction policies for cached leaderboards and segments
+- [ ] Integrate advanced features with Analytics for visualization and validation
 
+## Phase 9 — Observability (Day 22–24)
 - [ ] Add OTEL SDK to all services
 - [ ] Deploy OTEL Collector
 - [ ] Deploy Prometheus, Loki, Tempo
