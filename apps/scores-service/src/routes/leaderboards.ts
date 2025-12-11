@@ -80,17 +80,21 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
       }
 
       const redisKey = `l:${tenantId}:${projectId}:${id}`;
+      const metadataKey = `l:meta:${tenantId}:${projectId}:${id}`;
 
       try {
+        // Get sort order from metadata
+        const metadata = await redis.hgetall(metadataKey);
+        const sortOrder = (metadata?.sortOrder || 'desc') as 'asc' | 'desc';
+        
         const start = offset;
         const stop = offset + limit - 1;
 
-        const results = await redis.zrevrange(
-          redisKey,
-          start,
-          stop,
-          'WITHSCORES',
-        );
+        // Use appropriate Redis command based on sort order
+        const results = sortOrder === 'desc'
+          ? await redis.zrevrange(redisKey, start, stop, 'WITHSCORES')
+          : await redis.zrange(redisKey, start, stop, 'WITHSCORES');
+        
         const total = await redis.zcard(redisKey);
 
         const entries = [];
@@ -198,10 +202,17 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
       }
 
       const redisKey = `l:${tenantId}:${projectId}:${id}`;
+      const metadataKey = `l:meta:${tenantId}:${projectId}:${id}`;
 
       try {
+        // Get sort order from metadata
+        const metadata = await redis.hgetall(metadataKey);
+        const sortOrder = (metadata?.sortOrder || 'desc') as 'asc' | 'desc';
+        
         const score = await redis.zscore(redisKey, userId);
-        const rank = await redis.zrevrank(redisKey, userId);
+        const rank = sortOrder === 'desc'
+          ? await redis.zrevrank(redisKey, userId)
+          : await redis.zrank(redisKey, userId);
 
         if (score === null || rank === null) {
           return reply.send({
@@ -236,16 +247,18 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
           const belowStart = rank + 1;
           const belowStop = rank + neighborCount;
 
+          const rangeCommand = sortOrder === 'desc' ? 'zrevrange' : 'zrange';
+          
           const above =
             rank > 0
-              ? await redis.zrevrange(
+              ? await redis[rangeCommand](
                   redisKey,
                   aboveStart,
                   aboveStop,
                   'WITHSCORES',
                 )
               : [];
-          const below = await redis.zrevrange(
+          const below = await redis[rangeCommand](
             redisKey,
             belowStart,
             belowStop,

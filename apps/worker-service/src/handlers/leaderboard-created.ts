@@ -16,6 +16,8 @@ export async function leaderboardCreatedHandler(
       name: data.name,
       projectId: data.projectId,
       tenantId: data.tenantId,
+      sortOrder: data.sortOrder,
+      updateMode: data.updateMode,
       createdAt: data.timestamp,
       ttlDays: data.ttlDays?.toString() || '0',
     });

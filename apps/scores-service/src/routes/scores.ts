@@ -74,13 +74,35 @@ export async function scoresRoutes(fastify: FastifyInstance) {
       const metadataKey = `l:meta:${tenantId}:${projectId}:${leaderboardId}`;
 
       try {
-        // Get TTL from metadata if it exists
+        // Get metadata for TTL and updateMode
         const metadata = await redis.hgetall(metadataKey);
         const ttlDays = metadata?.ttlDays ? parseInt(metadata.ttlDays) : 0;
+        const updateMode = (metadata?.updateMode || 'replace') as 'replace' | 'increment' | 'best';
+        const sortOrder = (metadata?.sortOrder || 'desc') as 'asc' | 'desc';
 
-        if (increment) {
+        // Apply update based on updateMode from leaderboard config
+        if (updateMode === 'increment' || increment) {
+          // Increment: add to existing score
           await redis.zincrby(redisKey, score, userId);
+        } else if (updateMode === 'best') {
+          // Best: only update if new score is better
+          const currentScore = await redis.zscore(redisKey, userId);
+          
+          if (currentScore === null) {
+            // No existing score, add it
+            await redis.zadd(redisKey, score, userId);
+          } else {
+            const current = parseFloat(currentScore);
+            const shouldUpdate = sortOrder === 'desc' 
+              ? score > current  // Higher is better
+              : score < current; // Lower is better
+            
+            if (shouldUpdate) {
+              await redis.zadd(redisKey, score, userId);
+            }
+          }
         } else {
+          // Replace: always overwrite with new score
           await redis.zadd(redisKey, score, userId);
         }
 
@@ -91,7 +113,9 @@ export async function scoresRoutes(fastify: FastifyInstance) {
         }
 
         const finalScore = await redis.zscore(redisKey, userId);
-        const rank = await redis.zrevrank(redisKey, userId);
+        const rank = sortOrder === 'desc'
+          ? await redis.zrevrank(redisKey, userId)
+          : await redis.zrank(redisKey, userId);
 
         publishScoreEvent({
           tenantId,
@@ -178,16 +202,78 @@ export async function scoresRoutes(fastify: FastifyInstance) {
       }
 
       const results = [];
-      const pipeline = redis.pipeline();
+      
+      // Collect unique leaderboards to fetch metadata
+      const uniqueLeaderboards = new Set(updates.map(u => u.leaderboardId));
+      const leaderboardMetadata = new Map<string, { 
+        ttlDays: number;
+        updateMode: 'replace' | 'increment' | 'best';
+        sortOrder: 'asc' | 'desc';
+      }>();
+      
+      // Fetch metadata for all unique leaderboards
+      for (const leaderboardId of uniqueLeaderboards) {
+        const metadataKey = `l:meta:${tenantId}:${projectId}:${leaderboardId}`;
+        const metadata = await redis.hgetall(metadataKey);
+        const ttlDays = metadata?.ttlDays ? parseInt(metadata.ttlDays) : 0;
+        const updateMode = (metadata?.updateMode || 'replace') as 'replace' | 'increment' | 'best';
+        const sortOrder = (metadata?.sortOrder || 'desc') as 'asc' | 'desc';
+        leaderboardMetadata.set(leaderboardId, { ttlDays, updateMode, sortOrder });
+      }
 
+      // For 'best' mode, we need to fetch current scores first
+      // This is less efficient but necessary for correctness
+      const currentScores = new Map<string, number>();
+      for (const update of updates) {
+        const lbMeta = leaderboardMetadata.get(update.leaderboardId);
+        if (lbMeta?.updateMode === 'best') {
+          const redisKey = `l:${tenantId}:${projectId}:${update.leaderboardId}`;
+          const scoreKey = `${update.leaderboardId}:${update.userId}`;
+          const currentScore = await redis.zscore(redisKey, update.userId);
+          if (currentScore !== null) {
+            currentScores.set(scoreKey, parseFloat(currentScore));
+          }
+        }
+      }
+
+      const pipeline = redis.pipeline();
+      
       for (const update of updates) {
         const { leaderboardId, userId, score, increment = false } = update;
         const redisKey = `l:${tenantId}:${projectId}:${leaderboardId}`;
+        const lbMeta = leaderboardMetadata.get(leaderboardId);
+        
+        if (!lbMeta) continue;
 
-        if (increment) {
+        const updateMode = lbMeta.updateMode;
+        
+        if (updateMode === 'increment' || increment) {
           pipeline.zincrby(redisKey, score, userId);
+        } else if (updateMode === 'best') {
+          const scoreKey = `${leaderboardId}:${userId}`;
+          const currentScore = currentScores.get(scoreKey);
+          
+          if (currentScore === undefined) {
+            // No existing score
+            pipeline.zadd(redisKey, score, userId);
+          } else {
+            // Check if new score is better
+            const shouldUpdate = lbMeta.sortOrder === 'desc'
+              ? score > currentScore
+              : score < currentScore;
+            
+            if (shouldUpdate) {
+              pipeline.zadd(redisKey, score, userId);
+            }
+          }
         } else {
           pipeline.zadd(redisKey, score, userId);
+        }
+        
+        // Apply TTL if configured
+        if (lbMeta.ttlDays > 0) {
+          const ttlSeconds = lbMeta.ttlDays * 24 * 60 * 60;
+          pipeline.expire(redisKey, ttlSeconds);
         }
 
         results.push({

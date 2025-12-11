@@ -16,6 +16,8 @@ export interface LeaderboardCreatedEvent {
   projectId: string;
   tenantId: string;
   name: string;
+  sortOrder: 'asc' | 'desc';
+  updateMode: 'replace' | 'increment' | 'best';
   ttlDays?: number;
   timestamp: string;
 }

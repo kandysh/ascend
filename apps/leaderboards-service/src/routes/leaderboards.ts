@@ -106,6 +106,8 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
           projectId,
           tenantId,
           name: leaderboard.name,
+          sortOrder: leaderboard.sort_order,
+          updateMode: leaderboard.update_mode,
           ttlDays: leaderboard.ttl_days || undefined,
           timestamp: new Date().toISOString(),
         });
