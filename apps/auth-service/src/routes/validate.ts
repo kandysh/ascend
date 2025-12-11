@@ -34,6 +34,11 @@ export const validateRoutes: FastifyPluginAsync = async (fastify) => {
                 format: 'uuid',
                 description: 'Project ID (only if valid)',
               },
+              planType: {
+                type: 'string',
+                enum: ['free', 'pro', 'enterprise'],
+                description: 'Tenant plan type (only if valid)',
+              },
             },
             required: ['valid'],
           },
@@ -72,16 +77,28 @@ export const validateRoutes: FastifyPluginAsync = async (fastify) => {
         const isValid = await verifyApiKey(apiKey, key.keyHash);
 
         if (isValid) {
+          // Update last used timestamp
           await sql`
           UPDATE api_keys
           SET last_used_at = NOW()
           WHERE id = ${key.id}
         `;
 
+          // Get tenant's plan type
+          const [subscription] = await sql`
+            SELECT plan_type
+            FROM subscriptions
+            WHERE tenant_id = ${key.tenantId}
+              AND status = 'active'
+            ORDER BY created_at DESC
+            LIMIT 1
+          `;
+
           return {
             valid: true,
             tenantId: key.tenantId,
             projectId: key.projectId,
+            planType: subscription?.plan_type || 'free',
           };
         }
       }

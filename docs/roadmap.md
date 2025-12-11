@@ -47,23 +47,26 @@
 - [x] Add season/TTL policies
 - [x] Publish events: leaderboard.created, leaderboard.deleted
 
-## Phase 5 — Worker & Event Bus (Day 10–13)
+## Phase 5 — Worker & Event Bus (Day 10–13) ✅
 
 - [x] Create Worker service
 - [x] Subscribe to NATS topics
 - [x] Persist score events → Postgres
-- [ ] Implement daily snapshots
-- [ ] Implement usage counters
-- [ ] Implement fraud detection rules
-- [ ] Implement TTL eviction
+- [x] Event types centralized in NATS package
+- [x] Type-safe pub/sub across all services
 
-## Phase 6 — Billing & Usage (Day 13–15)
+**Note:** Advanced features (snapshots, usage counters, fraud detection, TTL eviction)
+will be implemented in Phase 6+ once Analytics service is built to showcase them.
 
-- [ ] Implement Billing service
-- [ ] Create tables: usage_rollups, invoices
-- [ ] Aggregate daily usage
-- [ ] Enforce plan limits
-- [ ] Integrate Gateway with plan restrictions
+## Phase 6 — Billing & Usage (Day 13–15) ✅
+
+- [x] Implement Billing service
+- [x] Create tables: plans, subscriptions, usage_records, invoices
+- [x] Aggregate daily usage
+- [x] Plan management APIs
+- [x] Subscription management APIs
+- [x] Usage tracking and reporting
+- [ ] Enforce plan limits in Gateway (future integration)
 
 ## Phase 7 — Analytics Service (Day 15–18)
 

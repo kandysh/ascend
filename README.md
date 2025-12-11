@@ -160,7 +160,8 @@ curl http://localhost:3000/leaderboards/test \
 - [x] **Phase 3** - Scores Service
 - [x] **Phase 4** - Leaderboards Service
 - [x] **Phase 5** - Worker & Event Bus (NATS)
-- [ ] **Phase 6+** - Billing, Analytics, Dashboard
+- [x] **Phase 6** - Billing & Usage
+- [ ] **Phase 7+** - Analytics, Dashboard
 
 See [Roadmap](./docs/roadmap.md) for details.
 

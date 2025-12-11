@@ -22,7 +22,8 @@
     "service:gateway": "pnpm run --filter @ascend/gateway dev",
     "service:scores": "pnpm run --filter @ascend/scores-service dev",
     "service:leaderboards": "pnpm run --filter @ascend/leaderboards-service dev",
-    "service:worker": "pnpm run --filter @ascend/worker-service dev"
+    "service:worker": "pnpm run --filter @ascend/worker-service dev",
+    "service:billing": "pnpm run --filter @ascend/billing-service dev"
   },
   "keywords": [],
   "author": "",

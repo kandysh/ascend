@@ -1,8 +1,9 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import env from '@fastify/env';
-import rateLimit from '@fastify/rate-limit';
+import { createRedisClient } from '@ascend/redis-client';
 import { authMiddleware } from './middleware/auth.js';
+import { rateLimitMiddleware } from './middleware/rate-limit.js';
 import { usageMiddleware } from './middleware/usage.js';
 import { proxyRoutes } from './routes/proxy.js';
 import { config } from 'dotenv';
@@ -20,6 +21,7 @@ declare module 'fastify' {
   interface FastifyInstance {
     config: {
       PORT: number;
+      REDIS_URL: string;
       AUTH_SERVICE_URL: string;
       SCORES_SERVICE_URL: string;
       LEADERBOARDS_SERVICE_URL: string;
@@ -44,6 +46,10 @@ const envSchema = {
     PORT: {
       type: 'number',
       default: 3000,
+    },
+    REDIS_URL: {
+      type: 'string',
+      default: 'redis://localhost:6379',
     },
     AUTH_SERVICE_URL: {
       type: 'string',
@@ -77,19 +83,18 @@ async function buildServer() {
     origin: true,
   });
 
-  // Register rate limiter (used by proxy routes)
-  await fastify.register(rateLimit, {
-    max: 1000,
-    timeWindow: '1 minute',
-    keyGenerator: (request) => request.tenantId || 'anonymous',
-  });
+  // Initialize Redis for rate limiting
+  createRedisClient(fastify.config.REDIS_URL);
 
   fastify.get('/health', async () => {
     return { status: 'ok', service: 'gateway' };
   });
 
-  // Register auth middleware (validates API key)
+  // Register auth middleware (validates API key, sets planType)
   fastify.addHook('onRequest', authMiddleware);
+
+  // Register Redis-based token bucket rate limiter
+  fastify.addHook('onRequest', rateLimitMiddleware);
 
   // Register usage tracking middleware
   fastify.addHook('onResponse', usageMiddleware);

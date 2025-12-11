@@ -4,6 +4,7 @@ interface ValidationResponse {
   valid: boolean;
   tenantId?: string;
   projectId?: string;
+  planType?: string;
 }
 
 export async function authMiddleware(
@@ -17,11 +18,6 @@ export async function authMiddleware(
 
   // Skip auth for /auth routes (tenant/project/api-key management)
   if (request.url.startsWith('/auth')) {
-    return;
-  }
-
-  // Skip auth for Swagger UI static assets
-  if (request.url.startsWith('/docs')) {
     return;
   }
 
@@ -65,6 +61,10 @@ export async function authMiddleware(
     request.tenantId = validation.tenantId;
     request.projectId = validation.projectId;
 
+    // Store planType for rate limiting
+    (request as FastifyRequest & { planType?: string }).planType =
+      validation.planType || 'free';
+
     // Add tenant context to headers for downstream services
     request.headers['x-tenant-id'] = validation.tenantId!;
     request.headers['x-project-id'] = validation.projectId!;
@@ -73,6 +73,7 @@ export async function authMiddleware(
       {
         tenantId: validation.tenantId,
         projectId: validation.projectId,
+        planType: validation.planType,
         path: request.url,
       },
       'Request authenticated',

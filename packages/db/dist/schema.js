@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, integer, boolean, } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, uuid, integer, boolean, decimal, pgEnum, } from 'drizzle-orm/pg-core';
 export const tenants = pgTable('tenants', {
     id: uuid('id').primaryKey().defaultRandom(),
     name: text('name').notNull(),
@@ -69,5 +69,57 @@ export const scoreEvents = pgTable('score_events', {
     userId: text('user_id').notNull(),
     score: integer('score').notNull(),
     increment: boolean('increment').notNull().default(false),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+// Billing enums and tables
+export const planTypeEnum = pgEnum('plan_type', ['free', 'pro', 'enterprise']);
+export const subscriptionStatusEnum = pgEnum('subscription_status', [
+    'active',
+    'cancelled',
+    'past_due',
+]);
+export const subscriptions = pgTable('subscriptions', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: uuid('tenant_id')
+        .notNull()
+        .references(() => tenants.id, { onDelete: 'cascade' }),
+    planType: planTypeEnum('plan_type').notNull().default('free'),
+    status: subscriptionStatusEnum('status').notNull().default('active'),
+    currentPeriodStart: timestamp('current_period_start').notNull(),
+    currentPeriodEnd: timestamp('current_period_end').notNull(),
+    cancelAtPeriodEnd: boolean('cancel_at_period_end').notNull().default(false),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+export const usageRecords = pgTable('usage_records', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: uuid('tenant_id')
+        .notNull()
+        .references(() => tenants.id, { onDelete: 'cascade' }),
+    projectId: uuid('project_id')
+        .notNull()
+        .references(() => projects.id, { onDelete: 'cascade' }),
+    date: timestamp('date').notNull(),
+    scoreUpdates: integer('score_updates').notNull().default(0),
+    leaderboardReads: integer('leaderboard_reads').notNull().default(0),
+    totalRequests: integer('total_requests').notNull().default(0),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+export const invoices = pgTable('invoices', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: uuid('tenant_id')
+        .notNull()
+        .references(() => tenants.id, { onDelete: 'cascade' }),
+    subscriptionId: uuid('subscription_id')
+        .notNull()
+        .references(() => subscriptions.id),
+    invoiceNumber: text('invoice_number').notNull().unique(),
+    status: text('status').notNull().default('draft'),
+    amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+    currency: text('currency').notNull().default('USD'),
+    periodStart: timestamp('period_start').notNull(),
+    periodEnd: timestamp('period_end').notNull(),
+    dueDate: timestamp('due_date').notNull(),
+    paidAt: timestamp('paid_at'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
 });

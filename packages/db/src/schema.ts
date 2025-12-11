@@ -5,6 +5,8 @@ import {
   uuid,
   integer,
   boolean,
+  decimal,
+  pgEnum,
 } from 'drizzle-orm/pg-core';
 
 export const tenants = pgTable('tenants', {
@@ -102,3 +104,71 @@ export const scoreEvents = pgTable('score_events', {
 
 export type ScoreEvent = typeof scoreEvents.$inferSelect;
 export type NewScoreEvent = typeof scoreEvents.$inferInsert;
+
+// Billing enums and tables
+export const planTypeEnum = pgEnum('plan_type', ['free', 'pro', 'enterprise']);
+export const subscriptionStatusEnum = pgEnum('subscription_status', [
+  'active',
+  'cancelled',
+  'past_due',
+]);
+
+export type SubscriptionStatus = typeof subscriptionStatusEnum.enumValues;
+export type PlanType = typeof planTypeEnum.enumValues;
+
+export const subscriptions = pgTable('subscriptions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  tenantId: uuid('tenant_id')
+    .notNull()
+    .references(() => tenants.id, { onDelete: 'cascade' }),
+  planType: planTypeEnum('plan_type').notNull().default('free'),
+  status: subscriptionStatusEnum('status').notNull().default('active'),
+  currentPeriodStart: timestamp('current_period_start').notNull(),
+  currentPeriodEnd: timestamp('current_period_end').notNull(),
+  cancelAtPeriodEnd: boolean('cancel_at_period_end').notNull().default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+export type Subscription = typeof subscriptions.$inferSelect;
+export type NewSubscription = typeof subscriptions.$inferInsert;
+
+export const usageRecords = pgTable('usage_records', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  tenantId: uuid('tenant_id')
+    .notNull()
+    .references(() => tenants.id, { onDelete: 'cascade' }),
+  projectId: uuid('project_id')
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  date: timestamp('date').notNull(),
+  scoreUpdates: integer('score_updates').notNull().default(0),
+  leaderboardReads: integer('leaderboard_reads').notNull().default(0),
+  totalRequests: integer('total_requests').notNull().default(0),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export type UsageRecord = typeof usageRecords.$inferSelect;
+export type NewUsageRecord = typeof usageRecords.$inferInsert;
+
+export const invoices = pgTable('invoices', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  tenantId: uuid('tenant_id')
+    .notNull()
+    .references(() => tenants.id, { onDelete: 'cascade' }),
+  subscriptionId: uuid('subscription_id')
+    .notNull()
+    .references(() => subscriptions.id),
+  invoiceNumber: text('invoice_number').notNull().unique(),
+  status: text('status').notNull().default('draft'),
+  amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+  currency: text('currency').notNull().default('USD'),
+  periodStart: timestamp('period_start').notNull(),
+  periodEnd: timestamp('period_end').notNull(),
+  dueDate: timestamp('due_date').notNull(),
+  paidAt: timestamp('paid_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export type Invoice = typeof invoices.$inferSelect;
+export type NewInvoice = typeof invoices.$inferInsert;
