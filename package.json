@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm run --filter './packages/*' build",
+    "app:build": "pnpm run --filter './apps/*' build",
     "dev": "pnpm run --parallel --filter './apps/*' dev",
     "test": "echo \"No tests configured yet\"",
     "lint": "eslint .",
