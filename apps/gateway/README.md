@@ -28,9 +28,11 @@ Client Request → Gateway → Auth Service (validate)
 ## Routes
 
 ### Public Routes
+
 - `GET /health` - Health check (no auth required)
 
 ### Proxied Routes (require authentication)
+
 - `/scores/*` → Scores Service (port 3002)
 - `/leaderboards/*` → Leaderboards Service (port 3003)
 - `/billing/*` → Billing Service (port 3005)
@@ -46,11 +48,13 @@ Client Request → Gateway → Auth Service (validate)
 ## Request Headers
 
 ### Required (from client)
+
 ```
 X-Api-Key: ak_...
 ```
 
 ### Injected (by gateway)
+
 ```
 X-Tenant-Id: <uuid>
 X-Project-Id: <uuid>
@@ -67,6 +71,7 @@ Downstream services can trust these headers as they're validated by the gateway.
 ## Usage Tracking
 
 Tracks request counts per tenant per day:
+
 ```typescript
 {
   "tenant-id:2024-12-11": 1542,
@@ -75,6 +80,7 @@ Tracks request counts per tenant per day:
 ```
 
 In production, this should be:
+
 - Stored in Redis
 - Sent to a queue for processing
 - Used for billing calculations
@@ -109,6 +115,7 @@ pnpm start
 ## Example Usage
 
 ### Authenticated Request
+
 ```bash
 # Get leaderboard top scores
 curl http://localhost:3000/leaderboards/my-game/top \
@@ -126,12 +133,14 @@ curl -X POST http://localhost:3000/scores/update \
 ```
 
 ### Unauthenticated Request
+
 ```bash
 curl http://localhost:3000/leaderboards/top
 # 401 Unauthorized - X-Api-Key header is required
 ```
 
 ### Invalid API Key
+
 ```bash
 curl http://localhost:3000/leaderboards/top \
   -H "X-Api-Key: invalid_key"
@@ -139,6 +148,7 @@ curl http://localhost:3000/leaderboards/top \
 ```
 
 ### Rate Limit Exceeded
+
 ```bash
 # After 1000 requests in 1 minute
 curl http://localhost:3000/leaderboards/top \
@@ -156,16 +166,17 @@ curl http://localhost:3000/leaderboards/top \
 
 ## Error Handling
 
-| Status | Error | Description |
-|--------|-------|-------------|
-| 401 | Unauthorized | Missing or invalid API key |
-| 429 | Too Many Requests | Rate limit exceeded |
-| 503 | Service Unavailable | Auth service down |
-| 502 | Bad Gateway | Downstream service error |
+| Status | Error               | Description                |
+| ------ | ------------------- | -------------------------- |
+| 401    | Unauthorized        | Missing or invalid API key |
+| 429    | Too Many Requests   | Rate limit exceeded        |
+| 503    | Service Unavailable | Auth service down          |
+| 502    | Bad Gateway         | Downstream service error   |
 
 ## Monitoring
 
 Key metrics to track:
+
 - Request rate per tenant
 - Auth validation latency
 - Proxy latency

@@ -32,12 +32,13 @@ ANALYTICS_SERVICE_PORT=3006
 ## Usage
 
 ### From Services
+
 Services use `@fastify/env` which automatically loads from `.env`:
 
 ```typescript
 await fastify.register(env, {
   schema: envSchema,
-  dotenv: true,  // Loads .env file
+  dotenv: true, // Loads .env file
 });
 
 // Access via fastify.config
@@ -45,6 +46,7 @@ const port = fastify.config.PORT;
 ```
 
 ### From Database Scripts
+
 Migration and other DB scripts use `dotenv`:
 
 ```typescript
@@ -58,6 +60,7 @@ config({ path: resolve(process.cwd(), '.env') });
 ```
 
 ### From Drizzle Kit
+
 Drizzle config automatically loads `.env`:
 
 ```typescript
@@ -77,13 +80,17 @@ export default defineConfig({
 ## Development vs Production
 
 ### Development
+
 Use `.env` file in project root (gitignored):
+
 ```bash
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/ascend
 ```
 
 ### Production
+
 Set environment variables directly in your deployment platform:
+
 - Docker: Use `docker-compose.yml` or Kubernetes ConfigMaps/Secrets
 - Cloud: Use platform-specific env var configuration
 - CI/CD: Use GitHub Actions secrets
@@ -98,6 +105,7 @@ Set environment variables directly in your deployment platform:
 ## Troubleshooting
 
 ### Migration can't connect to database
+
 ```bash
 # Check if DATABASE_URL is set
 echo $DATABASE_URL
@@ -110,7 +118,9 @@ DATABASE_URL="postgres://..." pnpm db:migrate
 ```
 
 ### Service can't read env vars
+
 Make sure `.env` exists in project root:
+
 ```bash
 ls -la .env
 # Should exist
@@ -120,7 +130,9 @@ cp .env.example .env
 ```
 
 ### Wrong database credentials
+
 Default credentials from `infra/docker-compose.yml`:
+
 - Username: `postgres`
 - Password: `postgres`
 - Database: `ascend`
@@ -128,6 +140,7 @@ Default credentials from `infra/docker-compose.yml`:
 - Port: `5432`
 
 Full connection string:
+
 ```
 postgres://postgres:postgres@localhost:5432/ascend
 ```

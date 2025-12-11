@@ -59,11 +59,14 @@ export async function authMiddleware(
     request.headers['x-tenant-id'] = validation.tenantId!;
     request.headers['x-project-id'] = validation.projectId!;
 
-    request.log.info({
-      tenantId: validation.tenantId,
-      projectId: validation.projectId,
-      path: request.url,
-    }, 'Request authenticated');
+    request.log.info(
+      {
+        tenantId: validation.tenantId,
+        projectId: validation.projectId,
+        path: request.url,
+      },
+      'Request authenticated',
+    );
   } catch (error) {
     request.log.error(error, 'Auth service error');
     return reply.code(503).send({

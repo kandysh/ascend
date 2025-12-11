@@ -5,11 +5,13 @@ This guide walks through testing the complete authentication and routing flow.
 ## Prerequisites
 
 1. Infrastructure running:
+
    ```bash
    pnpm infra:start
    ```
 
 2. Auth service running:
+
    ```bash
    # From project root
    pnpm service:auth
@@ -24,6 +26,7 @@ This guide walks through testing the complete authentication and routing flow.
 ## Step 1: Create Test Tenant & API Key
 
 ### Create Tenant
+
 ```bash
 curl -X POST http://localhost:3001/tenants \
   -H "Content-Type: application/json" \
@@ -33,6 +36,7 @@ curl -X POST http://localhost:3001/tenants \
 Save the `tenant.id` from the response.
 
 ### Create Project
+
 ```bash
 curl -X POST http://localhost:3001/projects \
   -H "Content-Type: application/json" \
@@ -45,6 +49,7 @@ curl -X POST http://localhost:3001/projects \
 Save the `project.id` from the response.
 
 ### Create API Key
+
 ```bash
 curl -X POST http://localhost:3001/api-keys \
   -H "Content-Type: application/json" \
@@ -59,6 +64,7 @@ Save the `apiKey` (starts with `ak_...`) from the response. **This is only shown
 ## Step 2: Test Gateway Authentication
 
 ### Test Without API Key (Should Fail)
+
 ```bash
 curl -v http://localhost:3000/health
 # ✅ Should return 200 OK (health check is public)
@@ -68,6 +74,7 @@ curl -v http://localhost:3000/leaderboards/test
 ```
 
 ### Test With Invalid API Key (Should Fail)
+
 ```bash
 curl -v http://localhost:3000/leaderboards/test \
   -H "X-Api-Key: invalid_key_123"
@@ -75,6 +82,7 @@ curl -v http://localhost:3000/leaderboards/test \
 ```
 
 ### Test With Valid API Key (Should Work)
+
 ```bash
 curl -v http://localhost:3000/leaderboards/test \
   -H "X-Api-Key: <YOUR_API_KEY>"
@@ -83,6 +91,7 @@ curl -v http://localhost:3000/leaderboards/test \
 ```
 
 Check the gateway logs - you should see:
+
 ```
 "Request authenticated"
 tenantId: "..."
@@ -103,7 +112,7 @@ for i in {1..1010}; do
   STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
     http://localhost:3000/leaderboards/test \
     -H "X-Api-Key: $API_KEY")
-  
+
   if [ "$STATUS" = "429" ]; then
     echo "Request $i: Rate limited! (429)"
     break
@@ -116,6 +125,7 @@ done
 ```
 
 Expected output:
+
 ```
 Request 100: 502
 Request 200: 502
@@ -138,6 +148,7 @@ done
 ```
 
 Check the gateway logs for usage tracking:
+
 ```json
 {
   "tenantId": "...",
@@ -153,11 +164,13 @@ Check the gateway logs for usage tracking:
 ## Step 5: Test API Key Revocation
 
 ### Revoke the API Key
+
 ```bash
 curl -X DELETE http://localhost:3001/api-keys/<API_KEY_ID>
 ```
 
 ### Try Using Revoked Key
+
 ```bash
 curl -v http://localhost:3000/leaderboards/test \
   -H "X-Api-Key: <YOUR_API_KEY>"
@@ -167,6 +180,7 @@ curl -v http://localhost:3000/leaderboards/test \
 ## Step 6: Test Multiple Tenants
 
 Create a second tenant with its own API key and verify:
+
 1. Each tenant has separate rate limits
 2. Usage tracking is per-tenant
 3. Tenant context is correctly injected
@@ -198,6 +212,7 @@ curl http://localhost:3000/leaderboards/test \
 ## Expected Responses
 
 ### 200 OK - Health Check
+
 ```json
 {
   "status": "ok",
@@ -206,6 +221,7 @@ curl http://localhost:3000/leaderboards/test \
 ```
 
 ### 401 Unauthorized - Missing API Key
+
 ```json
 {
   "error": "Unauthorized",
@@ -214,6 +230,7 @@ curl http://localhost:3000/leaderboards/test \
 ```
 
 ### 401 Unauthorized - Invalid API Key
+
 ```json
 {
   "error": "Unauthorized",
@@ -222,6 +239,7 @@ curl http://localhost:3000/leaderboards/test \
 ```
 
 ### 429 Too Many Requests
+
 ```json
 {
   "statusCode": 429,
@@ -231,6 +249,7 @@ curl http://localhost:3000/leaderboards/test \
 ```
 
 ### 502 Bad Gateway - Service Down
+
 ```json
 {
   "statusCode": 502,
@@ -240,6 +259,7 @@ curl http://localhost:3000/leaderboards/test \
 ```
 
 ### 503 Service Unavailable - Auth Service Down
+
 ```json
 {
   "error": "Service Unavailable",
@@ -250,6 +270,7 @@ curl http://localhost:3000/leaderboards/test \
 ## Troubleshooting
 
 ### Gateway won't start
+
 ```bash
 # Check if port 3000 is already in use
 lsof -i :3000
@@ -259,6 +280,7 @@ cat .env | grep AUTH_SERVICE_URL
 ```
 
 ### Authentication always fails
+
 ```bash
 # Check if auth service is running
 curl http://localhost:3001/health
@@ -270,12 +292,14 @@ curl -X POST http://localhost:3001/validate \
 ```
 
 ### Rate limiting not working
+
 Check that requests are using the same API key (same tenant).
 Different API keys = different tenants = separate rate limits.
 
 ## Production Checklist
 
 Before deploying to production:
+
 - [ ] Replace in-memory usage tracking with Redis
 - [ ] Add distributed rate limiting (Redis-backed)
 - [ ] Configure proper rate limits per plan

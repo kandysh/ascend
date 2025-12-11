@@ -4,8 +4,10 @@ import postgres from 'postgres';
 import { config } from 'dotenv';
 import { resolve } from 'path';
 
-// Load .env from project root
-config({ path: resolve(process.cwd(), '.env') });
+// Load .env in development
+if (process.env.NODE_ENV !== 'production') {
+  config({ path: resolve(process.cwd(), '.env') });
+}
 
 async function main() {
   const connectionString =

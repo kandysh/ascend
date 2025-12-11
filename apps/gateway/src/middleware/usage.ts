@@ -18,14 +18,17 @@ export async function usageMiddleware(
     const current = usageStats.get(key) || 0;
     usageStats.set(key, current + 1);
 
-    request.log.info({
-      tenantId: request.tenantId,
-      projectId: request.projectId,
-      path: request.url,
-      method: request.method,
-      statusCode: reply.statusCode,
-      dailyUsage: current + 1,
-    }, 'Request tracked');
+    request.log.info(
+      {
+        tenantId: request.tenantId,
+        projectId: request.projectId,
+        path: request.url,
+        method: request.method,
+        statusCode: reply.statusCode,
+        dailyUsage: current + 1,
+      },
+      'Request tracked',
+    );
   }
 }
 

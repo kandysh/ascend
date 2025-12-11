@@ -50,6 +50,7 @@ pnpm dev
 ## 🛠️ Tech Stack
 
 ### Backend Services
+
 - **[Fastify](https://fastify.dev/)** - High-performance web framework
 - **[PostgreSQL](https://www.postgresql.org/)** - Primary database
 - **[Redis](https://redis.io/)** - Leaderboard storage & caching
@@ -57,6 +58,7 @@ pnpm dev
 - **[postgres.js](https://github.com/porsager/postgres)** - PostgreSQL client
 
 ### Development
+
 - **[TypeScript](https://www.typescriptlang.org/)** - Type safety
 - **[pnpm](https://pnpm.io/)** - Fast package manager
 - **[Docker](https://www.docker.com/)** - Local infrastructure
@@ -71,19 +73,20 @@ pnpm dev
 
 ## 🏗️ Available Services
 
-| Service | Status | Port | Description |
-|---------|--------|------|-------------|
-| Auth Service | ✅ Live | 3001 | Tenant & API key management |
-| API Gateway | 🔄 Next | 3000 | Request routing & validation |
-| Scores Service | 📋 Planned | 3002 | Score updates & queries |
-| Leaderboards Service | 📋 Planned | 3003 | Leaderboard CRUD |
-| Worker Service | 📋 Planned | 3004 | Background jobs |
-| Billing Service | 📋 Planned | 3005 | Usage tracking |
-| Analytics Service | 📋 Planned | 3006 | Metrics & insights |
+| Service              | Status     | Port | Description                  |
+| -------------------- | ---------- | ---- | ---------------------------- |
+| Auth Service         | ✅ Live    | 3001 | Tenant & API key management  |
+| API Gateway          | 🔄 Next    | 3000 | Request routing & validation |
+| Scores Service       | 📋 Planned | 3002 | Score updates & queries      |
+| Leaderboards Service | 📋 Planned | 3003 | Leaderboard CRUD             |
+| Worker Service       | 📋 Planned | 3004 | Background jobs              |
+| Billing Service      | 📋 Planned | 3005 | Usage tracking               |
+| Analytics Service    | 📋 Planned | 3006 | Metrics & insights           |
 
 ## 🧪 Example Usage
 
 ### Create API Key
+
 ```bash
 # 1. Create tenant
 curl -X POST http://localhost:3001/tenants \
@@ -102,6 +105,7 @@ curl -X POST http://localhost:3001/api-keys \
 ```
 
 ### Validate API Key
+
 ```bash
 curl -X POST http://localhost:3001/validate \
   -H "Content-Type: application/json" \
@@ -146,7 +150,9 @@ pnpm format             # Format code
 ## 🏛️ Architecture Decisions
 
 ### Database Layer
+
 We use **Drizzle Kit for schema management** and **postgres.js for queries**:
+
 - ✅ Type-safe schema definitions
 - ✅ Clean SQL queries (no ORM overhead)
 - ✅ Full SQL flexibility
@@ -155,7 +161,9 @@ We use **Drizzle Kit for schema management** and **postgres.js for queries**:
 **[Learn More](./docs/database-architecture.md)**
 
 ### Microservices
+
 Each service is independent with its own:
+
 - Database schema (shared Postgres)
 - Business logic
 - API endpoints

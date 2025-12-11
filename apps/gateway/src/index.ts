@@ -9,12 +9,12 @@ import { config } from 'dotenv';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-// Get the directory of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Load .env from project root (3 levels up from src/index.ts)
-config({ path: resolve(__dirname, '../../../.env') });
+// Load .env file in development
+if (process.env.NODE_ENV !== 'production') {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  config({ path: resolve(__dirname, '../../../.env') });
+}
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -68,7 +68,7 @@ async function buildServer() {
 
   await fastify.register(env, {
     schema: envSchema,
-    dotenv: false, // We load .env manually above
+    dotenv: process.env.NODE_ENV === 'production',
   });
 
   await fastify.register(cors, {

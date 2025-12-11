@@ -64,6 +64,7 @@ This ensures environment variables from `.env` are loaded correctly.
 ## Available Scripts
 
 ### Infrastructure Management
+
 ```bash
 pnpm infra:start     # Start PostgreSQL & Redis
 pnpm infra:stop      # Stop all infrastructure
@@ -73,6 +74,7 @@ pnpm infra:clean     # Stop and remove all data
 ```
 
 ### Database
+
 ```bash
 pnpm db:generate     # Generate migration from schema changes
 pnpm db:migrate      # Run pending migrations
@@ -80,6 +82,7 @@ pnpm db:studio       # Open Drizzle Studio GUI
 ```
 
 ### Development
+
 ```bash
 pnpm build           # Build all packages
 pnpm dev             # Watch and rebuild packages
@@ -90,6 +93,7 @@ pnpm format          # Format code with Prettier
 ## Testing the Auth Service
 
 ### Create a Tenant
+
 ```bash
 curl -X POST http://localhost:3001/tenants \
   -H "Content-Type: application/json" \
@@ -97,6 +101,7 @@ curl -X POST http://localhost:3001/tenants \
 ```
 
 Response:
+
 ```json
 {
   "tenant": {
@@ -110,6 +115,7 @@ Response:
 ```
 
 ### Create a Project
+
 ```bash
 curl -X POST http://localhost:3001/projects \
   -H "Content-Type: application/json" \
@@ -121,6 +127,7 @@ curl -X POST http://localhost:3001/projects \
 ```
 
 ### Create an API Key
+
 ```bash
 curl -X POST http://localhost:3001/api-keys \
   -H "Content-Type: application/json" \
@@ -131,6 +138,7 @@ curl -X POST http://localhost:3001/api-keys \
 ```
 
 Response includes the **actual API key** (only shown once):
+
 ```json
 {
   "apiKey": "ak_...",
@@ -142,6 +150,7 @@ Response includes the **actual API key** (only shown once):
 ```
 
 ### Validate the API Key
+
 ```bash
 curl -X POST http://localhost:3001/validate \
   -H "Content-Type: application/json" \
@@ -149,6 +158,7 @@ curl -X POST http://localhost:3001/validate \
 ```
 
 Response:
+
 ```json
 {
   "valid": true,
@@ -190,7 +200,6 @@ docker compose up -d pgadmin redis-commander
 - **pgAdmin**: http://localhost:5050
   - Email: `admin@ascend.local`
   - Password: `admin`
-  
 - **Redis Commander**: http://localhost:8081
 
 - **Drizzle Studio**: `pnpm db:studio`
@@ -219,10 +228,11 @@ If PostgreSQL or Redis ports are in use, modify `infra/docker-compose.yml`:
 
 ```yaml
 ports:
-  - '15432:5432'  # Custom PostgreSQL port
+  - '15432:5432' # Custom PostgreSQL port
 ```
 
 Update `.env`:
+
 ```env
 DATABASE_URL=postgres://postgres:postgres@localhost:15432/ascend
 ```
