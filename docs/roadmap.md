@@ -47,7 +47,7 @@
 - [x] Add season/TTL policies
 - [x] Publish events: leaderboard.created, leaderboard.deleted
 
-## Phase 5 — Worker & Event Bus (Day 10–13) ✅
+## Phase 5 — Worker & Event Bus (Day 10–13) [DONE]
 
 - [x] Create Worker service
 - [x] Subscribe to NATS topics
@@ -55,7 +55,7 @@
 - [x] Event types centralized in NATS package
 - [x] Type-safe pub/sub across all services
 
-## Phase 6 — Billing & Usage (Day 13–15) ✅
+## Phase 6 — Billing & Usage (Day 13–15) [DONE]
 
 - [x] Implement Billing service
 - [x] Create tables: plans, subscriptions, usage_records, invoices

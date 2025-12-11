@@ -37,13 +37,13 @@ async function benchmark(
 }
 
 async function runBenchmarks() {
-  console.log('🚀 Starting Redis Leaderboard Benchmarks\n');
+  console.log('Starting Redis Leaderboard Benchmarks\n');
   console.log(`Iterations per test: ${TEST_ITERATIONS.toLocaleString()}`);
   console.log(`Redis URL: ${REDIS_URL}\n`);
 
   const redis = createRedisClient(REDIS_URL);
   await redis.ping();
-  console.log('✅ Redis connected\n');
+  console.log('Redis connected\n');
 
   const testKey = 'benchmark:leaderboard:test';
   await redis.del(testKey);
@@ -123,10 +123,10 @@ async function runBenchmarks() {
     ),
   );
 
-  console.log('\n📊 Benchmark Results:\n');
+  console.log('\nBenchmark Results:\n');
   console.table(results);
 
-  console.log('\n🎯 Key Insights:');
+  console.log('\nKey Insights:');
   console.log(
     `  • Average write latency: ${results[0].avgTimeMs.toFixed(3)}ms (ZADD)`,
   );
@@ -139,12 +139,12 @@ async function runBenchmarks() {
 
   const totalEntries = await redis.zcard(testKey);
   console.log(
-    `\n📈 Final leaderboard size: ${totalEntries.toLocaleString()} entries`,
+    `\nFinal leaderboard size: ${totalEntries.toLocaleString()} entries`,
   );
 
   await redis.del(testKey);
   await closeRedisClient();
-  console.log('\n✅ Cleanup complete');
+  console.log('\nCleanup complete');
 }
 
 runBenchmarks().catch(console.error);

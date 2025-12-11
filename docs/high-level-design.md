@@ -1,10 +1,10 @@
-# 🚀 Multitenant Leaderboard SaaS — Microservices Architecture Blueprint
+# Multitenant Leaderboard SaaS — Microservices Architecture Blueprint
 
 This document provides a clean, production-grade architecture for a **microservices-based, enterprise-ready, multi-tenant Leaderboard SaaS platform**. It is optimized for showcasing backend mastery, distributed systems thinking, DevOps competency, observability, and SaaS product design.
 
 ---
 
-# 🎯 1. System Overview
+# 1. System Overview
 
 A distributed, scalable, fast, multi-tenant leaderboard system with strong separation of concerns.
 
@@ -44,7 +44,7 @@ Observability Stack: OTEL Collector → Prometheus + Loki + Tempo → Grafana
 
 ---
 
-# 🧩 2. Microservice Catalog
+# 2. Microservice Catalog
 
 Each component is independently deployable and horizontally scalable.
 
@@ -104,7 +104,7 @@ Each component is independently deployable and horizontally scalable.
 
 ---
 
-# 🗄 3. Data Architecture
+# 3. Data Architecture
 
 ## **Redis (Owned by Scores Service)**
 
@@ -148,7 +148,7 @@ Topics:
 
 ---
 
-# 🔐 4. Multitenancy Model
+# 4. Multitenancy Model
 
 ### **Identity = API Key**
 
@@ -168,7 +168,7 @@ Gateway performs auth; downstream services assume authenticated requests.
 
 ---
 
-# ⚡ 5. Hot Path Logic (Scores Service)
+# 5. Hot Path Logic (Scores Service)
 
 ```
 Client → Gateway → Scores Service → Redis → Response (sub-5ms)
@@ -193,7 +193,7 @@ Never hits Postgres in real-time path.
 
 ---
 
-# 🧵 6. Async Processing (Worker Service)
+# 6. Async Processing (Worker Service)
 
 The worker ensures durability, billing, and analytics.
 
@@ -207,7 +207,7 @@ Triggered by event bus:
 
 ---
 
-# 💸 7. Billing Architecture
+# 7. Billing Architecture
 
 ### Usage Model: Ops-based Billing
 
@@ -234,7 +234,7 @@ INCR usage:{tenant}:{date}
 
 ---
 
-# 🔭 8. Observability & Tracing
+# 8. Observability & Tracing
 
 All services instrumented using OTEL.
 
@@ -261,7 +261,7 @@ SDK → Gateway → Scores → Redis
 
 ---
 
-# 🛡 9. Security Architecture
+# 9. Security Architecture
 
 - API keys stored hashed (bcrypt/libsodium)
 - Gateway rate limits & quotas
@@ -272,7 +272,7 @@ SDK → Gateway → Scores → Redis
 
 ---
 
-# 🛠 10. Deployment & Infra
+# 10. Deployment & Infra
 
 ## Recommended Stack
 
@@ -289,7 +289,7 @@ SDK → Gateway → Scores → Redis
 
 ---
 
-# 🧪 11. Testing Strategy
+# 11. Testing Strategy
 
 - **Unit tests**: per service
 - **Integration tests**: Redis + Postgres via Testcontainers
@@ -299,7 +299,7 @@ SDK → Gateway → Scores → Redis
 
 ---
 
-# 🗂 12. Repository Structure (Turborepo)
+# 12. Repository Structure (Turborepo)
 
 ```
 /apps
@@ -330,7 +330,7 @@ SDK → Gateway → Scores → Redis
 
 ---
 
-# 🎬 13. Demo / Presentation Flow
+# 13. Demo / Presentation Flow
 
 For interviews or portfolio, showcase:
 
@@ -345,7 +345,7 @@ For interviews or portfolio, showcase:
 
 ---
 
-# 🏁 14. Milestone Roadmap
+# 14. Milestone Roadmap
 
 **Week 1:** Gateway, Auth Service, Scores Service (Redis hot path)
 **Week 2:** Worker + Event Bus + DB events
@@ -356,7 +356,7 @@ For interviews or portfolio, showcase:
 
 ---
 
-# 🌟 Summary
+# Summary
 
 This microservices architecture:
 

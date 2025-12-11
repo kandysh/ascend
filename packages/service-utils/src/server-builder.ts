@@ -106,8 +106,8 @@ export async function startService(
     const port = (server.config.PORT as number) || config.port;
 
     await server.listen({ port, host: '0.0.0.0' });
-    console.log(`✅ ${config.title} listening on port ${port}`);
-    console.log(`📚 Docs available at http://localhost:${port}/docs`);
+    console.log(`${config.title} listening on port ${port}`);
+    console.log(`Docs available at http://localhost:${port}/docs`);
 
     return server;
   } catch (err) {

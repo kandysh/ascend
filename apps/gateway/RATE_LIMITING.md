@@ -13,10 +13,10 @@ Distributed rate limiting using the **Token Bucket algorithm** implemented with 
 
 ### Why Token Bucket?
 
-- ✅ **Allows Bursts**: Users can burst up to bucket capacity
-- ✅ **Smooth Traffic**: Refills at constant rate for sustained load
-- ✅ **Fair Distribution**: Each tenant has isolated bucket
-- ✅ **Distributed**: Redis ensures consistency across gateway instances
+- **Allows Bursts**: Users can burst up to bucket capacity
+- **Smooth Traffic**: Refills at constant rate for sustained load
+- **Fair Distribution**: Each tenant has isolated bucket
+- **Distributed**: Redis ensures consistency across gateway instances
 
 ## Plan-Based Limits
 
@@ -30,10 +30,10 @@ Distributed rate limiting using the **Token Bucket algorithm** implemented with 
 
 **Free Plan (Burst = 10, Refill = 1/sec):**
 
-- User makes 10 requests instantly → ✅ All pass (burst allowed)
-- User makes 11th request instantly → ❌ Rate limited
+- User makes 10 requests instantly → All pass (burst allowed)
+- User makes 11th request instantly → Rate limited
 - User waits 5 seconds → 5 tokens refilled
-- User makes 5 more requests → ✅ All pass
+- User makes 5 more requests → All pass
 
 **Pro Plan (Burst = 100, Refill = 50/sec):**
 
@@ -178,10 +178,10 @@ done
 
 ### Expected Results (Free Plan)
 
-- Requests 1-10: ✅ 200 OK (burst allowed)
-- Request 11: ❌ 429 Too Many Requests
+- Requests 1-10: 200 OK (burst allowed)
+- Request 11: 429 Too Many Requests
 - Wait 5 seconds
-- Requests 12-16: ✅ 200 OK (5 tokens refilled)
+- Requests 12-16: 200 OK (5 tokens refilled)
 
 ## Monitoring
 
@@ -211,7 +211,7 @@ redis-cli MONITOR | grep rate_limit
 | ------------------ | ------------------- | ------------------ |
 | **Distribution**   | Single instance     | Multi-instance     |
 | **Algorithm**      | Fixed window        | Token bucket       |
-| **Burst Handling** | ❌ No               | ✅ Yes             |
+| **Burst Handling** | No                  | Yes                |
 | **Plan-Based**     | Manual config       | Automatic          |
 | **Fairness**       | Window reset spike  | Smooth refill      |
 | **State**          | In-memory           | Persistent Redis   |

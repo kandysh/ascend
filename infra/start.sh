@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Starting Ascend infrastructure..."
+echo "Starting Ascend infrastructure..."
 cd "$(dirname "$0")"
 
 # Start services
@@ -21,7 +21,7 @@ until docker compose exec -T redis redis-cli ping > /dev/null 2>&1; do
   sleep 2
 done
 
-echo "✅ Infrastructure is ready!"
+echo "Infrastructure is ready!"
 echo ""
 echo "PostgreSQL: localhost:5432"
 echo "Redis: localhost:6379"

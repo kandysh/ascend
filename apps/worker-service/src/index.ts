@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 async function start() {
-  console.log('🚀 Starting Worker Service...');
+  console.log('Starting Worker Service...');
 
   try {
     // Initialize connections
@@ -33,7 +33,7 @@ async function start() {
     createDbClient(databaseUrl);
     await createNatsClient(natsUrl);
 
-    console.log('✅ Database and NATS connected');
+    console.log('Database and NATS connected');
 
     // Subscribe to events
     await subscribeToEvents<ScoreUpdatedEvent>(
@@ -49,26 +49,26 @@ async function start() {
       leaderboardDeletedHandler,
     );
 
-    console.log('✅ Subscribed to events:');
+    console.log('Subscribed to events:');
     console.log(`   - ${EventSubjects.SCORE_UPDATED}`);
     console.log(`   - ${EventSubjects.LEADERBOARD_CREATED}`);
     console.log(`   - ${EventSubjects.LEADERBOARD_DELETED}`);
 
-    console.log('✅ Worker service is running...');
+    console.log('Worker service is running...');
   } catch (error) {
-    console.error('❌ Failed to start worker service:', error);
+    console.error('Failed to start worker service:', error);
     process.exit(1);
   }
 }
 
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('\n🛑 Shutting down worker service...');
+  console.log('\nShutting down worker service...');
   process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-  console.log('\n🛑 Shutting down worker service...');
+  console.log('\nShutting down worker service...');
   process.exit(0);
 });
 

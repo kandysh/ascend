@@ -111,7 +111,7 @@ async function start() {
     const port = server.config.PORT;
 
     await server.listen({ port, host: '0.0.0.0' });
-    console.log(`🚀 API Gateway listening on port ${port}`);
+    console.log(`API Gateway listening on port ${port}`);
   } catch (err) {
     console.error('Failed to start gateway:', err);
     process.exit(1);
