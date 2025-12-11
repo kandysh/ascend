@@ -48,7 +48,7 @@ services:
     image: dpage/pgadmin4:latest
     container_name: ascend-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@ascend.local
+      PGADMIN_DEFAULT_EMAIL: admin@ascend.app
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:

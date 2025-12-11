@@ -5,7 +5,7 @@ echo "🚀 Starting Ascend infrastructure..."
 cd "$(dirname "$0")"
 
 # Start services
-docker compose up -d postgres redis
+docker compose up -d
 
 echo "⏳ Waiting for services to be healthy..."
 sleep 5
