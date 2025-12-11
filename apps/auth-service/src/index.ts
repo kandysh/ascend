@@ -1,6 +1,8 @@
 import { createDbClient } from '@ascend/db';
 import cors from '@fastify/cors';
 import env from '@fastify/env';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
 import Fastify from 'fastify';
 import { apiKeysRoutes } from './routes/api-keys.js';
 import { projectsRoutes } from './routes/projects.js';
@@ -54,6 +56,39 @@ async function buildServer() {
 
   await fastify.register(cors, {
     origin: true,
+  });
+
+  // Register Swagger
+  await fastify.register(swagger, {
+    openapi: {
+      info: {
+        title: 'Ascend Auth Service API',
+        description: 'Authentication, tenant, and API key management',
+        version: '1.0.0',
+      },
+      servers: [
+        {
+          url: 'http://localhost:3001',
+          description: 'Development',
+        },
+      ],
+      tags: [
+        { name: 'tenants', description: 'Tenant management' },
+        { name: 'projects', description: 'Project management' },
+        { name: 'api-keys', description: 'API key management' },
+        { name: 'validation', description: 'API key validation' },
+      ],
+    },
+  });
+
+  // Register Swagger UI
+  await fastify.register(swaggerUi, {
+    routePrefix: '/docs',
+    uiConfig: {
+      docExpansion: 'list',
+      deepLinking: true,
+    },
+    staticCSP: true,
   });
 
   createDbClient(fastify.config.DATABASE_URL);
