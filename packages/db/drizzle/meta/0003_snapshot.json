@@ -59,12 +59,8 @@
           "name": "api_keys_project_id_projects_id_fk",
           "tableFrom": "api_keys",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -162,12 +158,8 @@
           "name": "invoices_tenant_id_tenants_id_fk",
           "tableFrom": "invoices",
           "tableTo": "tenants",
-          "columnsFrom": [
-            "tenant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tenant_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -175,12 +167,8 @@
           "name": "invoices_subscription_id_subscriptions_id_fk",
           "tableFrom": "invoices",
           "tableTo": "subscriptions",
-          "columnsFrom": [
-            "subscription_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["subscription_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -190,9 +178,7 @@
         "invoices_invoice_number_unique": {
           "name": "invoices_invoice_number_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "invoice_number"
-          ]
+          "columns": ["invoice_number"]
         }
       },
       "policies": {},
@@ -288,12 +274,8 @@
           "name": "leaderboards_project_id_projects_id_fk",
           "tableFrom": "leaderboards",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -354,12 +336,8 @@
           "name": "projects_tenant_id_tenants_id_fk",
           "tableFrom": "projects",
           "tableTo": "tenants",
-          "columnsFrom": [
-            "tenant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tenant_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -432,12 +410,8 @@
           "name": "score_events_project_id_projects_id_fk",
           "tableFrom": "score_events",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -510,12 +484,8 @@
           "name": "seasons_leaderboard_id_leaderboards_id_fk",
           "tableFrom": "seasons",
           "tableTo": "leaderboards",
-          "columnsFrom": [
-            "leaderboard_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["leaderboard_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -599,12 +569,8 @@
           "name": "subscriptions_tenant_id_tenants_id_fk",
           "tableFrom": "subscriptions",
           "tableTo": "tenants",
-          "columnsFrom": [
-            "tenant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tenant_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -660,9 +626,7 @@
         "tenants_email_unique": {
           "name": "tenants_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -733,12 +697,8 @@
           "name": "usage_records_tenant_id_tenants_id_fk",
           "tableFrom": "usage_records",
           "tableTo": "tenants",
-          "columnsFrom": [
-            "tenant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tenant_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -746,12 +706,8 @@
           "name": "usage_records_project_id_projects_id_fk",
           "tableFrom": "usage_records",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -767,20 +723,12 @@
     "public.plan_type": {
       "name": "plan_type",
       "schema": "public",
-      "values": [
-        "free",
-        "pro",
-        "enterprise"
-      ]
+      "values": ["free", "pro", "enterprise"]
     },
     "public.subscription_status": {
       "name": "subscription_status",
       "schema": "public",
-      "values": [
-        "active",
-        "cancelled",
-        "past_due"
-      ]
+      "values": ["active", "cancelled", "past_due"]
     }
   },
   "schemas": {},

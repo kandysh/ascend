@@ -18,6 +18,7 @@ Three plan types are defined as PostgreSQL enums and seeded via migration:
 - **enterprise** - $499/month, 10M requests, 9999 leaderboards/keys
 
 Plans are immutable and seeded automatically when running migrations:
+
 ```bash
 pnpm db:migrate  # Plans are created automatically
 ```
@@ -25,33 +26,39 @@ pnpm db:migrate  # Plans are created automatically
 ## Database Tables
 
 ### plans (seeded via migration)
+
 - type: `plan_type` enum (free, pro, enterprise)
 - display_name, description
 - price, currency
 - requests_per_month, leaderboards_limit, api_keys_limit
 
 ### subscriptions
+
 - tenant_id → tenants
 - plan_id → plans
 - status: `subscription_status` enum (active, cancelled, past_due)
 - current_period_start/end
 
 ### usage_records
+
 - Daily rollups per project
 - score_updates, leaderboard_reads, total_requests
 
 ### invoices
+
 - Invoice structure (for future payment integration)
 
 ## API Endpoints
 
 ### Subscriptions
+
 - `POST /subscriptions` - Subscribe tenant to plan (by type: free/pro/enterprise)
 - `GET /subscriptions/tenant/:tenantId` - Get tenant subscription
 - `PATCH /subscriptions/:id/cancel` - Cancel subscription
 - `GET /subscriptions/:id/usage-check` - Check plan limits
 
 ### Usage
+
 - `POST /usage/record` - Record usage
 - `GET /usage/tenant/:tenantId` - Get tenant usage
 - `GET /usage/project/:projectId` - Get project usage
@@ -78,6 +85,7 @@ curl -X POST http://localhost:3005/subscriptions \
 ## Integration
 
 Gateway should:
+
 1. Call `/subscriptions/:id/usage-check` to enforce limits
 2. Call `/usage/record` to track requests
 3. Return 429 when limits exceeded

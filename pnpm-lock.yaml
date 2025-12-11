@@ -41,24 +41,12 @@ importers:
       '@ascend/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@ascend/service-utils':
+        specifier: workspace:*
+        version: link:../../packages/service-utils
       '@ascend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@fastify/cors':
-        specifier: ^10.0.1
-        version: 10.1.0
-      '@fastify/env':
-        specifier: ^5.0.1
-        version: 5.0.3
-      '@fastify/swagger':
-        specifier: ^9.6.1
-        version: 9.6.1
-      '@fastify/swagger-ui':
-        specifier: ^5.2.3
-        version: 5.2.3
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.6.1
       fastify:
         specifier: ^5.2.0
         version: 5.6.2
@@ -81,24 +69,12 @@ importers:
       '@ascend/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@ascend/service-utils':
+        specifier: workspace:*
+        version: link:../../packages/service-utils
       '@ascend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@fastify/cors':
-        specifier: ^10.0.1
-        version: 10.1.0
-      '@fastify/env':
-        specifier: ^5.0.1
-        version: 5.0.3
-      '@fastify/swagger':
-        specifier: ^9.3.0
-        version: 9.6.1
-      '@fastify/swagger-ui':
-        specifier: ^5.0.1
-        version: 5.2.3
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.6.1
       fastify:
         specifier: ^5.2.0
         version: 5.6.2
@@ -155,24 +131,12 @@ importers:
       '@ascend/nats-client':
         specifier: workspace:*
         version: link:../../packages/nats-client
+      '@ascend/service-utils':
+        specifier: workspace:*
+        version: link:../../packages/service-utils
       '@ascend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@fastify/cors':
-        specifier: ^10.0.1
-        version: 10.1.0
-      '@fastify/env':
-        specifier: ^5.0.1
-        version: 5.0.3
-      '@fastify/swagger':
-        specifier: ^9.6.1
-        version: 9.6.1
-      '@fastify/swagger-ui':
-        specifier: ^5.2.3
-        version: 5.2.3
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.6.1
       drizzle-orm:
         specifier: ^0.36.4
         version: 0.36.4(postgres@3.4.7)
@@ -198,24 +162,12 @@ importers:
       '@ascend/redis-client':
         specifier: workspace:*
         version: link:../../packages/redis-client
+      '@ascend/service-utils':
+        specifier: workspace:*
+        version: link:../../packages/service-utils
       '@ascend/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@fastify/cors':
-        specifier: ^10.0.1
-        version: 10.1.0
-      '@fastify/env':
-        specifier: ^5.0.1
-        version: 5.0.3
-      '@fastify/swagger':
-        specifier: ^9.6.1
-        version: 9.6.1
-      '@fastify/swagger-ui':
-        specifier: ^5.2.3
-        version: 5.2.3
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.6.1
       fastify:
         specifier: ^5.2.0
         version: 5.6.2
@@ -308,6 +260,34 @@ importers:
 
   packages/sdk-js:
     devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/service-utils:
+    dependencies:
+      '@fastify/cors':
+        specifier: ^10.0.1
+        version: 10.1.0
+      '@fastify/env':
+        specifier: ^5.0.1
+        version: 5.0.3
+      '@fastify/swagger':
+        specifier: ^9.3.0
+        version: 9.6.1
+      '@fastify/swagger-ui':
+        specifier: ^5.2.0
+        version: 5.2.3
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
+      fastify:
+        specifier: ^5.2.0
+        version: 5.6.2
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.2
       typescript:
         specifier: ^5.7.2
         version: 5.9.3

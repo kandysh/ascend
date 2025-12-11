@@ -20,21 +20,23 @@ Distributed rate limiting using the **Token Bucket algorithm** implemented with 
 
 ## Plan-Based Limits
 
-| Plan       | Capacity (Burst) | Refill Rate   | Max Sustained RPS | Daily Limit |
-|------------|------------------|---------------|-------------------|-------------|
-| Free       | 10 requests      | 1 token/sec   | 1 req/sec         | ~86K        |
-| Pro        | 100 requests     | 50 tokens/sec | 50 req/sec        | ~4.3M       |
-| Enterprise | 500 requests     | 200 tokens/sec| 200 req/sec       | ~17M        |
+| Plan       | Capacity (Burst) | Refill Rate    | Max Sustained RPS | Daily Limit |
+| ---------- | ---------------- | -------------- | ----------------- | ----------- |
+| Free       | 10 requests      | 1 token/sec    | 1 req/sec         | ~86K        |
+| Pro        | 100 requests     | 50 tokens/sec  | 50 req/sec        | ~4.3M       |
+| Enterprise | 500 requests     | 200 tokens/sec | 200 req/sec       | ~17M        |
 
 ### Example Scenarios
 
 **Free Plan (Burst = 10, Refill = 1/sec):**
+
 - User makes 10 requests instantly → ✅ All pass (burst allowed)
 - User makes 11th request instantly → ❌ Rate limited
 - User waits 5 seconds → 5 tokens refilled
 - User makes 5 more requests → ✅ All pass
 
 **Pro Plan (Burst = 100, Refill = 50/sec):**
+
 - User can sustain 50 req/sec indefinitely
 - Can burst to 100 requests when needed
 - Bucket refills quickly (2 seconds to full)
@@ -119,8 +121,8 @@ Located in `apps/gateway/src/middleware/rate-limit.ts`:
 ```typescript
 const PLAN_RATE_LIMITS: Record<string, TokenBucketConfig> = {
   free: {
-    capacity: 10,      // Burst size
-    refillRate: 1,     // Tokens per second
+    capacity: 10, // Burst size
+    refillRate: 1, // Tokens per second
   },
   pro: {
     capacity: 100,
@@ -138,10 +140,12 @@ const PLAN_RATE_LIMITS: Record<string, TokenBucketConfig> = {
 ### Redis Down
 
 **Current Behavior**: Fail open (allow requests)
+
 - Logs error but doesn't block traffic
 - Graceful degradation
 
 **Alternative**: Fail closed (deny requests)
+
 ```typescript
 if (error) {
   return reply.code(503).send({ error: 'Service unavailable' });
@@ -203,14 +207,14 @@ redis-cli MONITOR | grep rate_limit
 
 ## Advantages Over @fastify/rate-limit
 
-| Feature | @fastify/rate-limit | Redis Token Bucket |
-|---------|-------------------|-------------------|
-| **Distribution** | Single instance | Multi-instance |
-| **Algorithm** | Fixed window | Token bucket |
-| **Burst Handling** | ❌ No | ✅ Yes |
-| **Plan-Based** | Manual config | Automatic |
-| **Fairness** | Window reset spike | Smooth refill |
-| **State** | In-memory | Persistent Redis |
+| Feature            | @fastify/rate-limit | Redis Token Bucket |
+| ------------------ | ------------------- | ------------------ |
+| **Distribution**   | Single instance     | Multi-instance     |
+| **Algorithm**      | Fixed window        | Token bucket       |
+| **Burst Handling** | ❌ No               | ✅ Yes             |
+| **Plan-Based**     | Manual config       | Automatic          |
+| **Fairness**       | Window reset spike  | Smooth refill      |
+| **State**          | In-memory           | Persistent Redis   |
 
 ## Future Improvements
 
