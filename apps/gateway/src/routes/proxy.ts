@@ -19,6 +19,15 @@ export const proxyRoutes: FastifyPluginAsync = async (fastify) => {
     http2: false,
   });
 
+  // Swagger UI routes (for auth service docs)
+  // Gateway: /docs -> Auth Service: /docs
+  await fastify.register(httpProxy, {
+    upstream: fastify.config.AUTH_SERVICE_URL,
+    prefix: '/docs',
+    rewritePrefix: '/docs',
+    http2: false,
+  });
+
   // Scores Service routes
   await fastify.register(httpProxy, {
     upstream: fastify.config.SCORES_SERVICE_URL,

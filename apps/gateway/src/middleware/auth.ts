@@ -20,6 +20,11 @@ export async function authMiddleware(
     return;
   }
 
+  // Skip auth for Swagger UI static assets
+  if (request.url.startsWith('/docs')) {
+    return;
+  }
+
   const apiKey = request.headers['x-api-key'] as string;
 
   if (!apiKey) {
