@@ -66,7 +66,7 @@ will be implemented in Phase 6+ once Analytics service is built to showcase them
 - [x] Plan management APIs
 - [x] Subscription management APIs
 - [x] Usage tracking and reporting
-- [ ] Enforce plan limits in Gateway (future integration)
+- [x] Enforce plan limits in Gateway
 
 ## Phase 7 — Analytics Service (Day 15–18)
 
