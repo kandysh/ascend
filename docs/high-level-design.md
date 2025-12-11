@@ -50,57 +50,57 @@ Each component is independently deployable and horizontally scalable.
 
 ## **1. API Gateway**
 
-* Validates `X-Api-Key`
-* Rate limiting per tenant
-* Routes requests to services
-* Injects trace context
+- Validates `X-Api-Key`
+- Rate limiting per tenant
+- Routes requests to services
+- Injects trace context
 
 ## **2. Auth/Tenant Service**
 
-* Stores & manages API keys (hashed)
-* Tracks tenants & billing plans
-* Provides metadata to gateway
+- Stores & manages API keys (hashed)
+- Tracks tenants & billing plans
+- Provides metadata to gateway
 
 ## **3. Scores Service (Core Hot Path)**
 
-* Responsible for *all real-time leaderboard operations*
-* Performs `ZINCRBY`, `ZREVRANK`, `ZREVRANGE`, `ZMSCORE`
-* Publishes `score.updated` to event bus
+- Responsible for _all real-time leaderboard operations_
+- Performs `ZINCRBY`, `ZREVRANK`, `ZREVRANGE`, `ZMSCORE`
+- Publishes `score.updated` to event bus
 
 ## **4. Leaderboards Service (Control Plane)**
 
-* CRUD for leaderboards
-* TTL, season resets, aggregation modes
-* Metadata stored in Postgres
+- CRUD for leaderboards
+- TTL, season resets, aggregation modes
+- Metadata stored in Postgres
 
 ## **5. Worker / Ingest Service**
 
-* Consumes `score.updated` events
-* Writes score events to Postgres (append-only)
-* Snapshotting leaderboards
-* Fraud detection rules
-* Billing usage increments
+- Consumes `score.updated` events
+- Writes score events to Postgres (append-only)
+- Snapshotting leaderboards
+- Fraud detection rules
+- Billing usage increments
 
 ## **6. Billing & Usage Service**
 
-* Aggregates usage metrics
-* Enforces plan restrictions
-* Integrates with billing provider
+- Aggregates usage metrics
+- Enforces plan restrictions
+- Integrates with billing provider
 
 ## **7. Analytics Service**
 
-* Builds aggregates for dashboards
-* Provides trending, time-series insights
+- Builds aggregates for dashboards
+- Provides trending, time-series insights
 
 ## **8. Dashboard (Next.js)**
 
-* Tenant admin UI
-* Insights, usage, logs, traces, leaderboard previews
+- Tenant admin UI
+- Insights, usage, logs, traces, leaderboard previews
 
 ## **9. Observability Stack**
 
-* OTEL → Collector → Prometheus/Loki/Tempo → Grafana
-* Full tracing across services
+- OTEL → Collector → Prometheus/Loki/Tempo → Grafana
+- Full tracing across services
 
 ---
 
@@ -118,33 +118,33 @@ l:{tenant}:{project}:{leaderboard}
 
 Uses ZSET commands:
 
-* `ZINCRBY` → atomic score updates
-* `ZREVRANGE` → top N
-* `ZREVRANK` → rank lookup
-* `ZMSCORE` → batch score queries
+- `ZINCRBY` → atomic score updates
+- `ZREVRANGE` → top N
+- `ZREVRANK` → rank lookup
+- `ZMSCORE` → batch score queries
 
 ## **Postgres (Owned by Control Plane + Worker)**
 
 Tables:
 
-* `tenants`
-* `api_keys`
-* `leaderboards`
-* `score_events` (append-only)
-* `usage_rollups`
-* `seasons`
-* `fraud_flags`
+- `tenants`
+- `api_keys`
+- `leaderboards`
+- `score_events` (append-only)
+- `usage_rollups`
+- `seasons`
+- `fraud_flags`
 
 ## **Event Bus (Kafka/NATS)**
 
 Topics:
 
-* `score.updated`
-* `leaderboard.created`
-* `leaderboard.deleted`
-* `usage.record`
-* `snapshot.trigger`
-* `fraud.alert`
+- `score.updated`
+- `leaderboard.created`
+- `leaderboard.deleted`
+- `usage.record`
+- `snapshot.trigger`
+- `fraud.alert`
 
 ---
 
@@ -199,11 +199,11 @@ The worker ensures durability, billing, and analytics.
 
 Triggered by event bus:
 
-* Insert score events to DB
-* Update usage counters
-* Detect fraud (unusual spikes)
-* Snapshot leaderboards (daily/hourly)
-* TTL eviction or seasonal resets
+- Insert score events to DB
+- Update usage counters
+- Detect fraud (unusual spikes)
+- Snapshot leaderboards (daily/hourly)
+- TTL eviction or seasonal resets
 
 ---
 
@@ -213,9 +213,9 @@ Triggered by event bus:
 
 Operations counted as:
 
-* Score updates
-* Read queries
-* Leaderboard operations
+- Score updates
+- Read queries
+- Leaderboard operations
 
 ### Redis Counter:
 
@@ -227,10 +227,10 @@ INCR usage:{tenant}:{date}
 
 ### Plans
 
-* Free — 100k ops/month
-* Hobby — 2M ops
-* Pro — 20M ops
-* Enterprise — custom
+- Free — 100k ops/month
+- Hobby — 2M ops
+- Pro — 20M ops
+- Enterprise — custom
 
 ---
 
@@ -247,28 +247,28 @@ SDK → Gateway → Scores → Redis
 
 ### Components
 
-* **Traces**: Tempo
-* **Logs**: Loki
-* **Metrics**: Prometheus
+- **Traces**: Tempo
+- **Logs**: Loki
+- **Metrics**: Prometheus
 
 ### Key metrics
 
-* Redis latency
-* P99 request latency
-* Request volume per tenant
-* Error rate
-* Worker lag
+- Redis latency
+- P99 request latency
+- Request volume per tenant
+- Error rate
+- Worker lag
 
 ---
 
 # 🛡 9. Security Architecture
 
-* API keys stored hashed (bcrypt/libsodium)
-* Gateway rate limits & quotas
-* TLS everywhere
-* Postgres RLS for tenant isolation
-* Secrets stored in Vault/cloud SM
-* Audit logging for all admin actions
+- API keys stored hashed (bcrypt/libsodium)
+- Gateway rate limits & quotas
+- TLS everywhere
+- Postgres RLS for tenant isolation
+- Secrets stored in Vault/cloud SM
+- Audit logging for all admin actions
 
 ---
 
@@ -276,26 +276,26 @@ SDK → Gateway → Scores → Redis
 
 ## Recommended Stack
 
-* Kubernetes (GKE / EKS / Fly K8s)
-* Managed Redis (Upstash, Elasticache)
-* Managed Postgres (Neon, RDS)
-* Kafka (Confluent Cloud)
-* OTEL collector (DaemonSet)
+- Kubernetes (GKE / EKS / Fly K8s)
+- Managed Redis (Upstash, Elasticache)
+- Managed Postgres (Neon, RDS)
+- Kafka (Confluent Cloud)
+- OTEL collector (DaemonSet)
 
 ## CI/CD
 
-* GitHub Actions
-* Build → Test → Publish → Deploy (Helm or K8s YAML)
+- GitHub Actions
+- Build → Test → Publish → Deploy (Helm or K8s YAML)
 
 ---
 
 # 🧪 11. Testing Strategy
 
-* **Unit tests**: per service
-* **Integration tests**: Redis + Postgres via Testcontainers
-* **Contract tests**: API Gateway → services
-* **E2E**: simulate client scoring + dashboard read
-* **Load tests**: k6 for leaderboard update bursts
+- **Unit tests**: per service
+- **Integration tests**: Redis + Postgres via Testcontainers
+- **Contract tests**: API Gateway → services
+- **E2E**: simulate client scoring + dashboard read
+- **Load tests**: k6 for leaderboard update bursts
 
 ---
 
@@ -360,11 +360,11 @@ For interviews or portfolio, showcase:
 
 This microservices architecture:
 
-* Demonstrates **high-performance backend engineering** (Redis ZSET, Fastify)
-* Shows **distributed systems skills** (Kafka, workers, async consistency)
-* Implements **multi-tenant SaaS principles** (namespacing, billing, auth)
-* Includes **enterprise-grade observability** (OTEL, Grafana)
-* Highlights **solid DevOps/k8s expertise**
-* Provides **extensible product features** (seasons, snapshots, analytics)
+- Demonstrates **high-performance backend engineering** (Redis ZSET, Fastify)
+- Shows **distributed systems skills** (Kafka, workers, async consistency)
+- Implements **multi-tenant SaaS principles** (namespacing, billing, auth)
+- Includes **enterprise-grade observability** (OTEL, Grafana)
+- Highlights **solid DevOps/k8s expertise**
+- Provides **extensible product features** (seasons, snapshots, analytics)
 
 Perfect for interviews, portfolio, or actual production SaaS.

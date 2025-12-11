@@ -1,7 +1,7 @@
-
 # Leaderboard SaaS – Microservices Implementation Roadmap
 
 ## Phase 0 — Foundation Setup (Day 0–1)
+
 - [ ] Initialize PNPM workspaces
 - [ ] Create core directories (/apps, /packages, /infra, /docs)
 - [ ] Add shared packages: types, db, redis-client, utils, sdk-js
@@ -9,6 +9,7 @@
 - [ ] Initialize GitHub repo + CI skeleton
 
 ## Phase 1 — Auth & Tenant System (Day 1–3)
+
 - [ ] Implement Auth/Tenant Fastify service
 - [ ] Create Postgres tables: tenants, projects, api_keys
 - [ ] Implement API key creation, rotation, revocation
@@ -17,6 +18,7 @@
 - [ ] Add migrations (Drizzle)
 
 ## Phase 2 — API Gateway (Day 3–4)
+
 - [ ] Implement Fastify-based API Gateway
 - [ ] Validate X-Api-Key using Auth Service
 - [ ] Inject tenant context into headers
@@ -27,6 +29,7 @@
 - [ ] Route: /billing → Billing Service
 
 ## Phase 3 — Scores Service (Day 5–8)
+
 - [ ] Scaffold Fastify Scores Service
 - [ ] Add Redis client
 - [ ] Implement POST /scores/update
@@ -37,6 +40,7 @@
 - [ ] Benchmark Redis operations
 
 ## Phase 4 — Leaderboards Service (Day 8–10)
+
 - [ ] Scaffold service
 - [ ] Create Postgres tables: leaderboards, seasons
 - [ ] Implement CRUD: create/update/delete leaderboard
@@ -44,6 +48,7 @@
 - [ ] Publish events: leaderboard.created, leaderboard.deleted
 
 ## Phase 5 — Worker & Event Bus (Day 10–13)
+
 - [ ] Create Worker service
 - [ ] Subscribe to Kafka/NATS topics
 - [ ] Persist score events → Postgres
@@ -53,6 +58,7 @@
 - [ ] Implement TTL eviction
 
 ## Phase 6 — Billing & Usage (Day 13–15)
+
 - [ ] Implement Billing service
 - [ ] Create tables: usage_rollups, invoices
 - [ ] Aggregate daily usage
@@ -60,11 +66,13 @@
 - [ ] Integrate Gateway with plan restrictions
 
 ## Phase 7 — Analytics Service (Day 15–18)
+
 - [ ] Implement time-series aggregation
 - [ ] Implement analytics APIs
 - [ ] Build active players, score trends, traffic peaks
 
 ## Phase 8 — Dashboard (Day 18–22)
+
 - [ ] Create Next.js dashboard
 - [ ] Overview page (usage, system metrics)
 - [ ] Leaderboards list page
@@ -74,6 +82,7 @@
 - [ ] Grafana embed (logs, traces, metrics)
 
 ## Phase 9 — Observability (Day 22–24)
+
 - [ ] Add OTEL SDK to all services
 - [ ] Deploy OTEL Collector
 - [ ] Deploy Prometheus, Loki, Tempo
@@ -81,6 +90,7 @@
 - [ ] Configure alerts
 
 ## Phase 10 — Deployment & DevOps (Day 24–30)
+
 - [ ] Dockerize all services
 - [ ] Write Kubernetes manifests or Helm charts
 - [ ] Set up GitHub Actions CI/CD
@@ -88,12 +98,14 @@
 - [ ] Set auto-scaling rules
 
 ## Phase 11 — Final Polish (Day 30–35)
+
 - [ ] Write documentation & API reference
 - [ ] Add sample SDKs (JS, Unity, Python)
 - [ ] Add public demo page
 - [ ] Record walkthrough video
 
 ## Optional — Enterprise Features
+
 - [ ] Per-tenant Redis clusters
 - [ ] Event replay engine
 - [ ] Multi-region latency routing

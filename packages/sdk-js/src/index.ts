@@ -7,7 +7,11 @@ export class AscendSDK {
     this.baseUrl = baseUrl;
   }
 
-  async updateScore(userId: string, leaderboardId: string, score: number): Promise<any> {
+  async updateScore(
+    userId: string,
+    leaderboardId: string,
+    score: number,
+  ): Promise<any> {
     const response = await fetch(`${this.baseUrl}/scores/update`, {
       method: 'POST',
       headers: {
@@ -24,14 +28,17 @@ export class AscendSDK {
     return response.json();
   }
 
-  async getLeaderboardTop(leaderboardId: string, limit: number = 10): Promise<any> {
+  async getLeaderboardTop(
+    leaderboardId: string,
+    limit: number = 10,
+  ): Promise<any> {
     const response = await fetch(
       `${this.baseUrl}/leaderboards/${leaderboardId}/top?limit=${limit}`,
       {
         headers: {
           'X-Api-Key': this.apiKey,
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -48,7 +55,7 @@ export class AscendSDK {
         headers: {
           'X-Api-Key': this.apiKey,
         },
-      }
+      },
     );
 
     if (!response.ok) {

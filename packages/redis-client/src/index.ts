@@ -7,13 +7,16 @@ export function createRedisClient(url?: string): Redis {
     return redisClient;
   }
 
-  redisClient = new Redis(url || process.env.REDIS_URL || 'redis://localhost:6379', {
-    maxRetriesPerRequest: 3,
-    retryStrategy(times) {
-      const delay = Math.min(times * 50, 2000);
-      return delay;
+  redisClient = new Redis(
+    url || process.env.REDIS_URL || 'redis://localhost:6379',
+    {
+      maxRetriesPerRequest: 3,
+      retryStrategy(times) {
+        const delay = Math.min(times * 50, 2000);
+        return delay;
+      },
     },
-  });
+  );
 
   redisClient.on('error', (err) => {
     console.error('Redis Client Error', err);
@@ -28,7 +31,9 @@ export function createRedisClient(url?: string): Redis {
 
 export function getRedisClient(): Redis {
   if (!redisClient) {
-    throw new Error('Redis client not initialized. Call createRedisClient first.');
+    throw new Error(
+      'Redis client not initialized. Call createRedisClient first.',
+    );
   }
   return redisClient;
 }
