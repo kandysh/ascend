@@ -11,7 +11,12 @@
     "format": "prettier --write .",
     "db:generate": "pnpm run --filter @ascend/db db:generate",
     "db:migrate": "pnpm run --filter @ascend/db db:migrate",
-    "db:studio": "pnpm run --filter @ascend/db db:studio"
+    "db:studio": "pnpm run --filter @ascend/db db:studio",
+    "infra:start": "cd infra && docker compose up -d",
+    "infra:stop": "cd infra && docker compose down",
+    "infra:restart": "pnpm infra:stop && pnpm infra:start",
+    "infra:logs": "cd infra && docker compose logs -f",
+    "infra:clean": "cd infra && docker compose down -v"
   },
   "keywords": [],
   "author": "",
