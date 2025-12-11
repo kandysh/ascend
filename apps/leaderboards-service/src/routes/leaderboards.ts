@@ -69,9 +69,12 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
       reply: FastifyReply,
     ) => {
       const projectId = request.projectId;
+      const tenantId = request.tenantId;
 
-      if (!projectId) {
-        return reply.code(400).send({ error: 'Missing project context' });
+      if (!projectId || !tenantId) {
+        return reply
+          .code(400)
+          .send({ error: 'Missing project or tenant context' });
       }
 
       const {
@@ -101,7 +104,9 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
           type: EventSubjects.LEADERBOARD_CREATED,
           leaderboardId: leaderboard.id,
           projectId,
+          tenantId,
           name: leaderboard.name,
+          ttlDays: leaderboard.ttl_days || undefined,
           timestamp: new Date().toISOString(),
         });
 
@@ -325,9 +330,12 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
     ) => {
       const { id } = request.params;
       const projectId = request.projectId;
+      const tenantId = request.tenantId;
 
-      if (!projectId) {
-        return reply.code(400).send({ error: 'Missing project context' });
+      if (!projectId || !tenantId) {
+        return reply
+          .code(400)
+          .send({ error: 'Missing project or tenant context' });
       }
 
       try {
@@ -345,6 +353,7 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
           type: EventSubjects.LEADERBOARD_DELETED,
           leaderboardId: id,
           projectId,
+          tenantId,
           name: deletedLeaderboard.name,
           timestamp: new Date().toISOString(),
         });

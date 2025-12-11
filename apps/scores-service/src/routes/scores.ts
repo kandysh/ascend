@@ -71,12 +71,23 @@ export async function scoresRoutes(fastify: FastifyInstance) {
       }
 
       const redisKey = `l:${tenantId}:${projectId}:${leaderboardId}`;
+      const metadataKey = `l:meta:${tenantId}:${projectId}:${leaderboardId}`;
 
       try {
+        // Get TTL from metadata if it exists
+        const metadata = await redis.hgetall(metadataKey);
+        const ttlDays = metadata?.ttlDays ? parseInt(metadata.ttlDays) : 0;
+
         if (increment) {
           await redis.zincrby(redisKey, score, userId);
         } else {
           await redis.zadd(redisKey, score, userId);
+        }
+
+        // Set or refresh TTL if configured
+        if (ttlDays > 0) {
+          const ttlSeconds = ttlDays * 24 * 60 * 60;
+          await redis.expire(redisKey, ttlSeconds);
         }
 
         const finalScore = await redis.zscore(redisKey, userId);

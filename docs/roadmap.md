@@ -82,6 +82,7 @@
 - [ ] Grafana embed (logs, traces, metrics)
 
 ## Phase 8.5 — Advanced Features (post-Analytics)
+
 - [ ] Implement leaderboard snapshots for efficient restores and history
 - [ ] Add per-tenant usage counters and high-resolution metering
 - [ ] Implement fraud detection and anomaly scoring pipelines
@@ -89,6 +90,7 @@
 - [ ] Integrate advanced features with Analytics for visualization and validation
 
 ## Phase 9 — Observability (Day 22–24)
+
 - [ ] Add OTEL SDK to all services
 - [ ] Deploy OTEL Collector
 - [ ] Deploy Prometheus, Loki, Tempo

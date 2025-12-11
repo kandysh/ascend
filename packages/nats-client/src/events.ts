@@ -14,7 +14,9 @@ export interface LeaderboardCreatedEvent {
   type: string;
   leaderboardId: string;
   projectId: string;
+  tenantId: string;
   name: string;
+  ttlDays?: number;
   timestamp: string;
 }
 
@@ -22,6 +24,7 @@ export interface LeaderboardDeletedEvent {
   type: string;
   leaderboardId: string;
   projectId: string;
+  tenantId: string;
   name: string;
   timestamp: string;
 }

@@ -71,13 +71,13 @@ Client → Gateway (Auth + Rate Limiting)
 
 ### Infrastructure
 
-| Service           | Port | Description                     |
-| ----------------- | ---- | ------------------------------- |
-| **PostgreSQL**    | 5432 | Primary data store              |
-| **Redis**         | 6379 | Leaderboards, cache, rate limit |
-| **NATS**          | 4222 | Event streaming (JetStream)     |
-| **Redis GUI**     | 8081 | Redis Commander (optional)      |
-| **PostgreSQL GUI**| 5050 | pgAdmin (optional)              |
+| Service            | Port | Description                     |
+| ------------------ | ---- | ------------------------------- |
+| **PostgreSQL**     | 5432 | Primary data store              |
+| **Redis**          | 6379 | Leaderboards, cache, rate limit |
+| **NATS**           | 4222 | Event streaming (JetStream)     |
+| **Redis GUI**      | 8081 | Redis Commander (optional)      |
+| **PostgreSQL GUI** | 5050 | pgAdmin (optional)              |
 
 ## Documentation
 
@@ -127,6 +127,7 @@ pnpm format:check      # Check formatting (CI)
 ### Rate Limiting
 
 Token bucket algorithm with plan-based limits:
+
 - **Free**: 10 req burst, 1/sec refill (86K daily)
 - **Pro**: 100 req burst, 50/sec refill (4.3M daily)
 - **Enterprise**: 500 req burst, 200/sec refill (17M daily)
@@ -278,17 +279,20 @@ CMD ["node", "apps/gateway/dist/index.js"]
 ## Key Features & Highlights
 
 ### Performance
+
 - **Sub-5ms latency** for score submissions and rank queries
 - **Redis-backed leaderboards** with sorted sets (ZADD/ZRANK)
 - **Token bucket rate limiting** with Redis Lua scripts
 
 ### Scalability
+
 - **Horizontal scaling** - All services are stateless
 - **Event-driven architecture** - NATS JetStream for async processing
 - **Database per service** - Logical separation in PostgreSQL
 - **Redis for hot paths** - Cache and leaderboard data
 
 ### Developer Experience
+
 - **Type-safe** - Shared TypeScript types across services
 - **Monorepo** - PNPM workspaces with shared packages
 - **Auto-generated docs** - Swagger UI for all services

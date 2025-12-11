@@ -193,6 +193,9 @@ importers:
       '@ascend/nats-client':
         specifier: workspace:*
         version: link:../../packages/nats-client
+      '@ascend/redis-client':
+        specifier: workspace:*
+        version: link:../../packages/redis-client
       dotenv:
         specifier: ^16.4.7
         version: 16.6.1

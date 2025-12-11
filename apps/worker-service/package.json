@@ -10,6 +10,7 @@
   "dependencies": {
     "@ascend/db": "workspace:*",
     "@ascend/nats-client": "workspace:*",
+    "@ascend/redis-client": "workspace:*",
     "dotenv": "^16.4.7"
   },
   "devDependencies": {
