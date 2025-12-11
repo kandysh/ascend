@@ -16,4 +16,4 @@
 
 /docs
   architecture.md
-  blueprints.md
+  blueprint.md
