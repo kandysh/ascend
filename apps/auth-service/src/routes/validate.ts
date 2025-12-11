@@ -20,16 +20,19 @@ export const validateRoutes: FastifyPluginAsync = async (fastify) => {
           200: {
             type: 'object',
             properties: {
-              valid: { type: 'boolean', description: 'Whether the API key is valid' },
-              tenantId: { 
-                type: 'string', 
-                format: 'uuid', 
-                description: 'Tenant ID (only if valid)' 
+              valid: {
+                type: 'boolean',
+                description: 'Whether the API key is valid',
               },
-              projectId: { 
-                type: 'string', 
-                format: 'uuid', 
-                description: 'Project ID (only if valid)' 
+              tenantId: {
+                type: 'string',
+                format: 'uuid',
+                description: 'Tenant ID (only if valid)',
+              },
+              projectId: {
+                type: 'string',
+                format: 'uuid',
+                description: 'Project ID (only if valid)',
               },
             },
             required: ['valid'],

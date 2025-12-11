@@ -23,7 +23,11 @@ export const projectsRoutes: FastifyPluginAsync = async (fastify) => {
           type: 'object',
           required: ['tenantId', 'name'],
           properties: {
-            tenantId: { type: 'string', format: 'uuid', description: 'Tenant ID' },
+            tenantId: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Tenant ID',
+            },
             name: { type: 'string', description: 'Project name' },
             description: { type: 'string', description: 'Project description' },
           },
@@ -52,7 +56,9 @@ export const projectsRoutes: FastifyPluginAsync = async (fastify) => {
       };
 
       if (!tenantId || !name) {
-        return reply.code(400).send({ error: 'TenantId and name are required' });
+        return reply
+          .code(400)
+          .send({ error: 'TenantId and name are required' });
       }
 
       const sql = getDbClient();
@@ -122,7 +128,11 @@ export const projectsRoutes: FastifyPluginAsync = async (fastify) => {
         params: {
           type: 'object',
           properties: {
-            tenantId: { type: 'string', format: 'uuid', description: 'Tenant ID' },
+            tenantId: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Tenant ID',
+            },
           },
         },
         response: {

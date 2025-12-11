@@ -23,7 +23,11 @@ export const tenantsRoutes: FastifyPluginAsync = async (fastify) => {
           required: ['name', 'email'],
           properties: {
             name: { type: 'string', description: 'Tenant name' },
-            email: { type: 'string', format: 'email', description: 'Tenant email' },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Tenant email',
+            },
           },
         },
         response: {

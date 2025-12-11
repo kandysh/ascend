@@ -36,7 +36,11 @@ export const apiKeysRoutes: FastifyPluginAsync = async (fastify) => {
           type: 'object',
           required: ['projectId', 'name'],
           properties: {
-            projectId: { type: 'string', format: 'uuid', description: 'Project ID' },
+            projectId: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Project ID',
+            },
             name: { type: 'string', description: 'API key name' },
           },
         },
@@ -64,7 +68,9 @@ export const apiKeysRoutes: FastifyPluginAsync = async (fastify) => {
       };
 
       if (!projectId || !name) {
-        return reply.code(400).send({ error: 'ProjectId and name are required' });
+        return reply
+          .code(400)
+          .send({ error: 'ProjectId and name are required' });
       }
 
       const sql = getDbClient();
@@ -226,7 +232,11 @@ export const apiKeysRoutes: FastifyPluginAsync = async (fastify) => {
         params: {
           type: 'object',
           properties: {
-            projectId: { type: 'string', format: 'uuid', description: 'Project ID' },
+            projectId: {
+              type: 'string',
+              format: 'uuid',
+              description: 'Project ID',
+            },
           },
         },
         response: {
