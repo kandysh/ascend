@@ -110,6 +110,49 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  apps/scores-service:
+    dependencies:
+      '@ascend/redis-client':
+        specifier: workspace:*
+        version: link:../../packages/redis-client
+      '@ascend/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@ascend/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@fastify/cors':
+        specifier: ^10.0.1
+        version: 10.1.0
+      '@fastify/env':
+        specifier: ^5.0.1
+        version: 5.0.3
+      '@fastify/swagger':
+        specifier: ^9.6.1
+        version: 9.6.1
+      '@fastify/swagger-ui':
+        specifier: ^5.2.3
+        version: 5.2.3
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
+      fastify:
+        specifier: ^5.2.0
+        version: 5.6.2
+      ioredis:
+        specifier: ^5.4.2
+        version: 5.8.2
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.2
+      tsx:
+        specifier: ^4.19.2
+        version: 4.21.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
   packages/db:
     dependencies:
       '@ascend/types':

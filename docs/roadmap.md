@@ -30,14 +30,14 @@
 
 ## Phase 3 — Scores Service (Day 5–8)
 
-- [ ] Scaffold Fastify Scores Service
-- [ ] Add Redis client
-- [ ] Implement POST /scores/update
-- [ ] Implement GET /leaderboards/:id/top
-- [ ] Implement GET /leaderboards/:id/rank/:user
-- [ ] Implement optional batch updates
-- [ ] Add event publishing: score.updated
-- [ ] Benchmark Redis operations
+- [x] Scaffold Fastify Scores Service
+- [x] Add Redis client
+- [x] Implement POST /scores/update
+- [x] Implement GET /leaderboards/:id/top
+- [x] Implement GET /leaderboards/:id/rank/:user
+- [x] Implement optional batch updates
+- [x] Add event publishing: score.updated
+- [x] Benchmark Redis operations
 
 ## Phase 4 — Leaderboards Service (Day 8–10)
 
@@ -50,7 +50,7 @@
 ## Phase 5 — Worker & Event Bus (Day 10–13)
 
 - [ ] Create Worker service
-- [ ] Subscribe to Kafka/NATS topics
+- [ ] Subscribe to NATS topics
 - [ ] Persist score events → Postgres
 - [ ] Implement daily snapshots
 - [ ] Implement usage counters
