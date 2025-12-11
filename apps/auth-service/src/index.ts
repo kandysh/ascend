@@ -6,6 +6,16 @@ import { apiKeysRoutes } from './routes/api-keys.js';
 import { projectsRoutes } from './routes/projects.js';
 import { tenantsRoutes } from './routes/tenants.js';
 import { validateRoutes } from './routes/validate.js';
+import { config } from 'dotenv';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load .env from project root (3 levels up from src/index.ts)
+config({ path: resolve(__dirname, '../../../.env') });
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -39,7 +49,7 @@ async function buildServer() {
 
   await fastify.register(env, {
     schema: envSchema,
-    dotenv: true,
+    dotenv: false, // We load .env manually above
   });
 
   await fastify.register(cors, {

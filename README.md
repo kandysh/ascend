@@ -132,6 +132,10 @@ pnpm db:generate        # Generate migration
 pnpm db:migrate         # Run migrations
 pnpm db:studio          # Open GUI
 
+# Services
+pnpm service:auth       # Start auth service
+pnpm service:gateway    # Start gateway
+
 # Development
 pnpm build              # Build all packages
 pnpm dev                # Watch mode

@@ -37,11 +37,29 @@ pnpm db:migrate
 ### 4. Start Auth Service
 
 ```bash
+# From project root (recommended)
+pnpm service:auth
+
+# Or from service directory
 cd apps/auth-service
 pnpm dev
 ```
 
 The service will start on http://localhost:3001
+
+## Starting Services
+
+All services can be started from the project root:
+
+```bash
+# Auth Service (port 3001)
+pnpm service:auth
+
+# API Gateway (port 3000)
+pnpm service:gateway
+```
+
+This ensures environment variables from `.env` are loaded correctly.
 
 ## Available Scripts
 

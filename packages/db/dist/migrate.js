@@ -6,7 +6,8 @@ import { resolve } from 'path';
 // Load .env from project root
 config({ path: resolve(process.cwd(), '.env') });
 async function main() {
-    const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/ascend';
+    const connectionString = process.env.DATABASE_URL ||
+        'postgres://postgres:postgres@localhost:5432/ascend';
     console.log('Connecting to database...');
     const migrationClient = postgres(connectionString, { max: 1 });
     const db = drizzle(migrationClient);

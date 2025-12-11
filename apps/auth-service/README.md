@@ -48,8 +48,12 @@ DATABASE_URL=postgres://localhost:5432/ascend
 ## Usage
 
 ```bash
-# Development
-pnpm run dev
+# Start from project root (recommended)
+pnpm service:auth
+
+# Or from service directory
+cd apps/auth-service
+pnpm dev
 
 # Build
 pnpm run build

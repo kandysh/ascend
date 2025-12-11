@@ -19,14 +19,14 @@
 
 ## Phase 2 — API Gateway (Day 3–4)
 
-- [ ] Implement Fastify-based API Gateway
-- [ ] Validate X-Api-Key using Auth Service
-- [ ] Inject tenant context into headers
-- [ ] Add rate limiting per tenant
-- [ ] Add usage counter middleware
-- [ ] Route: /scores → Scores Service
-- [ ] Route: /leaderboards → Leaderboards Service
-- [ ] Route: /billing → Billing Service
+- [x] Implement Fastify-based API Gateway
+- [x] Validate X-Api-Key using Auth Service
+- [x] Inject tenant context into headers
+- [x] Add rate limiting per tenant
+- [x] Add usage counter middleware
+- [x] Route: /scores → Scores Service
+- [x] Route: /leaderboards → Leaderboards Service
+- [x] Route: /billing → Billing Service
 
 ## Phase 3 — Scores Service (Day 5–8)
 
