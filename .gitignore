@@ -2,8 +2,7 @@ node_modules
 .env
 .env.local
 *.log
-dist/
+*dist/
 build/
 coverage/
 .DS_Store
-

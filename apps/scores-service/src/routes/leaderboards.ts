@@ -86,15 +86,16 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
         // Get sort order from metadata
         const metadata = await redis.hgetall(metadataKey);
         const sortOrder = (metadata?.sortOrder || 'desc') as 'asc' | 'desc';
-        
+
         const start = offset;
         const stop = offset + limit - 1;
 
         // Use appropriate Redis command based on sort order
-        const results = sortOrder === 'desc'
-          ? await redis.zrevrange(redisKey, start, stop, 'WITHSCORES')
-          : await redis.zrange(redisKey, start, stop, 'WITHSCORES');
-        
+        const results =
+          sortOrder === 'desc'
+            ? await redis.zrevrange(redisKey, start, stop, 'WITHSCORES')
+            : await redis.zrange(redisKey, start, stop, 'WITHSCORES');
+
         const total = await redis.zcard(redisKey);
 
         const entries = [];
@@ -208,11 +209,12 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
         // Get sort order from metadata
         const metadata = await redis.hgetall(metadataKey);
         const sortOrder = (metadata?.sortOrder || 'desc') as 'asc' | 'desc';
-        
+
         const score = await redis.zscore(redisKey, userId);
-        const rank = sortOrder === 'desc'
-          ? await redis.zrevrank(redisKey, userId)
-          : await redis.zrank(redisKey, userId);
+        const rank =
+          sortOrder === 'desc'
+            ? await redis.zrevrank(redisKey, userId)
+            : await redis.zrank(redisKey, userId);
 
         if (score === null || rank === null) {
           return reply.send({
@@ -248,7 +250,7 @@ export async function leaderboardsRoutes(fastify: FastifyInstance) {
           const belowStop = rank + neighborCount;
 
           const rangeCommand = sortOrder === 'desc' ? 'zrevrange' : 'zrange';
-          
+
           const above =
             rank > 0
               ? await redis[rangeCommand](
