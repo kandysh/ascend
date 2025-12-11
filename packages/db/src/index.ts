@@ -1,33 +1,40 @@
 import postgres from 'postgres';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import * as schema from './schema.js';
 
-let dbClient: ReturnType<typeof drizzle> | null = null;
+let sql: ReturnType<typeof postgres> | null = null;
 
 export function createDbClient(connectionString?: string) {
-  if (dbClient) {
-    return dbClient;
+  if (sql) {
+    return sql;
   }
 
-  const queryClient = postgres(
+  sql = postgres(
     connectionString ||
       process.env.DATABASE_URL ||
       'postgres://localhost:5432/ascend',
+    {
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 10,
+    },
   );
 
-  dbClient = drizzle(queryClient, { schema });
-
-  return dbClient;
+  return sql;
 }
 
 export function getDbClient() {
-  if (!dbClient) {
+  if (!sql) {
     throw new Error(
       'Database client not initialized. Call createDbClient first.',
     );
   }
-  return dbClient;
+  return sql;
+}
+
+export async function closeDbClient() {
+  if (sql) {
+    await sql.end();
+    sql = null;
+  }
 }
 
 export * from './schema.js';
-export { sql, eq, and, or, desc, asc } from 'drizzle-orm';

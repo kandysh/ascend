@@ -2,20 +2,20 @@
 
 ## Phase 0 — Foundation Setup (Day 0–1)
 
-- [ ] Initialize PNPM workspaces
-- [ ] Create core directories (/apps, /packages, /infra, /docs)
-- [ ] Add shared packages: types, db, redis-client, utils, sdk-js
-- [ ] Create .env templates
-- [ ] Initialize GitHub repo + CI skeleton
+- [x] Initialize PNPM workspaces
+- [x] Create core directories (/apps, /packages, /infra, /docs)
+- [x] Add shared packages: types, db, redis-client, utils, sdk-js
+- [x] Create .env templates
+- [x] Initialize GitHub repo + CI skeleton
 
 ## Phase 1 — Auth & Tenant System (Day 1–3)
 
-- [ ] Implement Auth/Tenant Fastify service
-- [ ] Create Postgres tables: tenants, projects, api_keys
-- [ ] Implement API key creation, rotation, revocation
-- [ ] Add API key hashing utilities
-- [ ] Implement Auth → Gateway lookup API
-- [ ] Add migrations (Drizzle)
+- [x] Implement Auth/Tenant Fastify service
+- [x] Create Postgres tables: tenants, projects, api_keys
+- [x] Implement API key creation, rotation, revocation
+- [x] Add API key hashing utilities
+- [x] Implement Auth → Gateway lookup API
+- [x] Add migrations (Drizzle)
 
 ## Phase 2 — API Gateway (Day 3–4)
 

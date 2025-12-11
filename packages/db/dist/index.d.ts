@@ -1,10 +1,6 @@
 import postgres from 'postgres';
-export declare function createDbClient(connectionString?: string): import("drizzle-orm/postgres-js").PostgresJsDatabase<Record<string, unknown>> & {
-    $client: postgres.Sql<{}>;
-};
-export declare function getDbClient(): import("drizzle-orm/postgres-js").PostgresJsDatabase<Record<string, unknown>> & {
-    $client: postgres.Sql<{}>;
-};
+export declare function createDbClient(connectionString?: string): postgres.Sql<{}>;
+export declare function getDbClient(): postgres.Sql<{}>;
+export declare function closeDbClient(): Promise<void>;
 export * from './schema.js';
-export { sql, eq, and, or, desc, asc } from 'drizzle-orm';
 //# sourceMappingURL=index.d.ts.map
