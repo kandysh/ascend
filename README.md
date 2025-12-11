@@ -189,14 +189,10 @@ ENV NODE_ENV=production
 CMD ["node", "apps/auth-service/dist/index.js"]
 ```
 
-## 🤝 Contributing
-
-This is a learning/portfolio project demonstrating modern microservices architecture.
-
 ## 📝 License
 
 ISC
 
 ---
 
-Built with ❤️ using TypeScript and microservices architecture.
+Built using TypeScript and microservices architecture.
