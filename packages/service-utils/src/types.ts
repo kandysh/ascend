@@ -1,4 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
+import '@fastify/swagger';
 
 export interface ServiceConfig {
   name: string;
