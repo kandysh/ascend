@@ -2,33 +2,7 @@
 
 A production-ready, microservices-based leaderboard platform for games and applications.
 
-## 🚀 Features
-
-- **Multi-tenant Architecture** - Isolated data per tenant
-- **API Key Management** - Secure authentication with rotation & revocation
-- **High Performance** - Redis-backed leaderboards
-- **Scalable Design** - Independent microservices
-- **Type-Safe** - Full TypeScript implementation
-- **Modern Stack** - Fastify, Postgres, Redis, Drizzle
-
-## 📦 Project Structure
-
-```
-ascend/
-├── apps/                    # Microservices
-│   └── auth-service/        # ✅ Authentication & tenant management
-├── packages/                # Shared libraries
-│   ├── types/               # TypeScript interfaces
-│   ├── db/                  # Database client & schema
-│   ├── redis-client/        # Redis wrapper
-│   ├── utils/               # API key hashing utilities
-│   └── sdk-js/              # Client SDK
-├── infra/                   # Infrastructure
-│   └── docker-compose.yml   # PostgreSQL & Redis
-└── docs/                    # Documentation
-```
-
-## 🏃 Quick Start
+## 🚀 Quick Start
 
 ```bash
 # 1. Install dependencies
@@ -40,138 +14,178 @@ pnpm infra:start
 # 3. Run database migrations
 pnpm db:migrate
 
-# 4. Start auth service
-cd apps/auth-service
-pnpm dev
+# 4. Start services
+pnpm service:auth      # Terminal 1 - Port 3001
+pnpm service:gateway   # Terminal 2 - Port 3000
 ```
 
-**[📖 Full Getting Started Guide](./docs/getting-started.md)**
+## 📦 Features
+
+- **Multi-tenant Architecture** - Isolated data per tenant
+- **API Key Management** - Secure authentication with rotation & revocation
+- **API Gateway** - Request routing, rate limiting, and validation
+- **Internal Service Security** - Services only accessible through gateway
+- **Type-Safe** - Full TypeScript implementation
+- **Modern Stack** - Fastify, Postgres, Redis, Drizzle
 
 ## 🛠️ Tech Stack
 
-### Backend Services
+- **Runtime**: Node.js 25 + TypeScript
+- **Framework**: Fastify
+- **Database**: PostgreSQL (postgres.js + Drizzle Kit)
+- **Cache**: Redis
+- **Monorepo**: PNPM Workspaces
 
-- **[Fastify](https://fastify.dev/)** - High-performance web framework
-- **[PostgreSQL](https://www.postgresql.org/)** - Primary database
-- **[Redis](https://redis.io/)** - Leaderboard storage & caching
-- **[Drizzle](https://orm.drizzle.team/)** - Schema management
-- **[postgres.js](https://github.com/porsager/postgres)** - PostgreSQL client
+## 🏗️ Architecture
 
-### Development
+### Services
 
-- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
-- **[pnpm](https://pnpm.io/)** - Fast package manager
-- **[Docker](https://www.docker.com/)** - Local infrastructure
-- **[ESLint](https://eslint.org/) & [Prettier](https://prettier.io/)** - Code quality
+| Service | Port | Status | Description |
+|---------|------|--------|-------------|
+| **Gateway** | 3000 | ✅ Live | Entry point, auth, routing, rate limiting |
+| **Auth Service** | 3001 | ✅ Live | Tenants, projects, API keys |
+| **Scores Service** | 3002 | 📋 Planned | Score updates and queries |
+| **Leaderboards Service** | 3003 | 📋 Planned | Leaderboard CRUD and rankings |
+| **Worker Service** | 3004 | 📋 Planned | Background jobs |
+| **Billing Service** | 3005 | 📋 Planned | Usage tracking |
+| **Analytics Service** | 3006 | 📋 Planned | Metrics and insights |
+
+### Request Flow
+
+```
+Client → Gateway → Auth Service (validate)
+           ↓
+       Rate Limiting
+           ↓
+       Route to Service
+```
 
 ## 📚 Documentation
 
-- **[Getting Started](./docs/getting-started.md)** - Setup and first steps
-- **[Database Architecture](./docs/database-architecture.md)** - How we use Drizzle & postgres.js
-- **[Development Roadmap](./docs/roadmap.md)** - Project phases and progress
-- **[Auth Service](./apps/auth-service/README.md)** - API documentation
+- **[Blueprint](./docs/blueprint.md)** - High-level system design
+- **[Architecture](./docs/high-level-design.md)** - Detailed architecture
+- **[Roadmap](./docs/roadmap.md)** - Development phases and progress
 
-## 🏗️ Available Services
+## 🔧 Development Commands
 
-| Service              | Status     | Port | Description                  |
-| -------------------- | ---------- | ---- | ---------------------------- |
-| Auth Service         | ✅ Live    | 3001 | Tenant & API key management  |
-| API Gateway          | 🔄 Next    | 3000 | Request routing & validation |
-| Scores Service       | 📋 Planned | 3002 | Score updates & queries      |
-| Leaderboards Service | 📋 Planned | 3003 | Leaderboard CRUD             |
-| Worker Service       | 📋 Planned | 3004 | Background jobs              |
-| Billing Service      | 📋 Planned | 3005 | Usage tracking               |
-| Analytics Service    | 📋 Planned | 3006 | Metrics & insights           |
+```bash
+# Infrastructure
+pnpm infra:start       # Start PostgreSQL & Redis
+pnpm infra:stop        # Stop infrastructure
+pnpm infra:logs        # View logs
+pnpm infra:clean       # Remove all data
+
+# Database
+pnpm db:generate       # Generate migration
+pnpm db:migrate        # Run migrations
+pnpm db:studio         # Open Drizzle Studio (GUI)
+
+# Services
+pnpm service:auth      # Start auth service
+pnpm service:gateway   # Start gateway
+
+# Development
+pnpm build             # Build all packages
+pnpm lint              # Lint code
+pnpm format            # Format code
+```
+
+## 🔒 Security
+
+### Internal Service Authentication
+
+Services require `X-Internal-Secret` header and can only be accessed through the gateway:
+
+```env
+INTERNAL_API_SECRET=your-secure-random-string
+```
+
+### API Key Format
+
+API keys use bcrypt hashing and follow format: `ak_<base64url>`
+
+## 🗂️ Project Structure
+
+```
+ascend/
+├── apps/                    # Microservices
+│   ├── auth-service/        # ✅ Authentication & tenant management
+│   └── gateway/             # ✅ API Gateway
+├── packages/                # Shared libraries
+│   ├── db/                  # Database client & schema
+│   ├── types/               # TypeScript interfaces
+│   ├── utils/               # Shared utilities
+│   ├── redis-client/        # Redis wrapper
+│   └── sdk-js/              # Client SDK
+├── infra/                   # Infrastructure
+│   └── docker-compose.yml   # PostgreSQL & Redis
+└── docs/                    # Documentation
+```
 
 ## 🧪 Example Usage
-
-### Create API Key
 
 ```bash
 # 1. Create tenant
 curl -X POST http://localhost:3001/tenants \
   -H "Content-Type: application/json" \
+  -H "X-Internal-Secret: dev-secret-change-in-production" \
   -d '{"name": "Acme Corp", "email": "admin@acme.com"}'
 
 # 2. Create project
 curl -X POST http://localhost:3001/projects \
   -H "Content-Type: application/json" \
-  -d '{"tenantId": "<id>", "name": "My Game"}'
+  -H "X-Internal-Secret: dev-secret-change-in-production" \
+  -d '{"tenantId": "<tenant-id>", "name": "My Game"}'
 
 # 3. Generate API key
 curl -X POST http://localhost:3001/api-keys \
   -H "Content-Type: application/json" \
-  -d '{"projectId": "<id>", "name": "Production"}'
-```
+  -H "X-Internal-Secret: dev-secret-change-in-production" \
+  -d '{"projectId": "<project-id>", "name": "Production"}'
 
-### Validate API Key
-
-```bash
-curl -X POST http://localhost:3001/validate \
-  -H "Content-Type: application/json" \
-  -d '{"apiKey": "ak_..."}'
+# 4. Use API key through gateway
+curl http://localhost:3000/leaderboards/test \
+  -H "X-Api-Key: ak_..."
 ```
 
 ## 📊 Development Progress
 
-- [x] **Phase 0** - Foundation (PNPM workspaces, packages, CI)
+- [x] **Phase 0** - Foundation (PNPM workspaces, packages)
 - [x] **Phase 1** - Auth & Tenant System
-- [ ] **Phase 2** - API Gateway
+- [x] **Phase 2** - API Gateway
 - [ ] **Phase 3** - Scores Service
 - [ ] **Phase 4** - Leaderboards Service
 - [ ] **Phase 5+** - Worker, Billing, Analytics, Dashboard
 
-**[View Full Roadmap](./docs/roadmap.md)**
+See [Roadmap](./docs/roadmap.md) for details.
 
-## 🔧 Common Commands
+## 🚀 Production Deployment
+
+### Environment Variables
 
 ```bash
-# Infrastructure
-pnpm infra:start        # Start PostgreSQL & Redis
-pnpm infra:stop         # Stop infrastructure
-pnpm infra:logs         # View logs
-
-# Database
-pnpm db:generate        # Generate migration
-pnpm db:migrate         # Run migrations
-pnpm db:studio          # Open GUI
-
-# Services
-pnpm service:auth       # Start auth service
-pnpm service:gateway    # Start gateway
-
-# Development
-pnpm build              # Build all packages
-pnpm dev                # Watch mode
-pnpm lint               # Lint code
-pnpm format             # Format code
+NODE_ENV=production
+DATABASE_URL=postgres://user:pass@host:5432/db
+REDIS_URL=redis://host:6379
+INTERNAL_API_SECRET=<secure-random-string>
 ```
 
-## 🏛️ Architecture Decisions
+### Docker Example
 
-### Database Layer
-
-We use **Drizzle Kit for schema management** and **postgres.js for queries**:
-
-- ✅ Type-safe schema definitions
-- ✅ Clean SQL queries (no ORM overhead)
-- ✅ Full SQL flexibility
-- ✅ Better performance
-
-**[Learn More](./docs/database-architecture.md)**
-
-### Microservices
-
-Each service is independent with its own:
-
-- Database schema (shared Postgres)
-- Business logic
-- API endpoints
-- Build & deploy pipeline
+```dockerfile
+FROM node:25-alpine
+WORKDIR /app
+COPY . .
+RUN corepack enable pnpm
+RUN pnpm install --frozen-lockfile
+RUN pnpm run build
+ENV NODE_ENV=production
+CMD ["node", "apps/auth-service/dist/index.js"]
+```
 
 ## 🤝 Contributing
 
-This is a learning/portfolio project. Feel free to explore the code and architecture!
+This is a learning/portfolio project demonstrating modern microservices architecture.
 
 ## 📝 License
 
@@ -179,4 +193,4 @@ ISC
 
 ---
 
-Built with ❤️ using modern TypeScript and microservices architecture.
+Built with ❤️ using TypeScript and microservices architecture.

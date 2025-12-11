@@ -11,7 +11,7 @@ export class AscendSDK {
     userId: string,
     leaderboardId: string,
     score: number,
-  ): Promise<any> {
+  ): Promise<Response> {
     const response = await fetch(`${this.baseUrl}/scores/update`, {
       method: 'POST',
       headers: {
@@ -31,7 +31,7 @@ export class AscendSDK {
   async getLeaderboardTop(
     leaderboardId: string,
     limit: number = 10,
-  ): Promise<any> {
+  ): Promise<Response> {
     const response = await fetch(
       `${this.baseUrl}/leaderboards/${leaderboardId}/top?limit=${limit}`,
       {
@@ -48,7 +48,7 @@ export class AscendSDK {
     return response.json();
   }
 
-  async getUserRank(leaderboardId: string, userId: string): Promise<any> {
+  async getUserRank(leaderboardId: string, userId: string): Promise<Response> {
     const response = await fetch(
       `${this.baseUrl}/leaderboards/${leaderboardId}/rank/${userId}`,
       {
