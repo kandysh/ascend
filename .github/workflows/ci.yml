@@ -27,7 +27,7 @@ jobs:
         run: pnpm run lint
 
       - name: Format check
-        run: pnpm run format -- --check
+        run: pnpm run format:check
 
   build:
     runs-on: ubuntu-latest

@@ -40,15 +40,15 @@ pnpm service:gateway   # Terminal 2 - Port 3000
 
 ### Services
 
-| Service | Port | Status | Description |
-|---------|------|--------|-------------|
-| **Gateway** | 3000 | ✅ Live | Entry point, auth, routing, rate limiting |
-| **Auth Service** | 3001 | ✅ Live | Tenants, projects, API keys |
-| **Scores Service** | 3002 | 📋 Planned | Score updates and queries |
-| **Leaderboards Service** | 3003 | 📋 Planned | Leaderboard CRUD and rankings |
-| **Worker Service** | 3004 | 📋 Planned | Background jobs |
-| **Billing Service** | 3005 | 📋 Planned | Usage tracking |
-| **Analytics Service** | 3006 | 📋 Planned | Metrics and insights |
+| Service                  | Port | Status     | Description                               |
+| ------------------------ | ---- | ---------- | ----------------------------------------- |
+| **Gateway**              | 3000 | ✅ Live    | Entry point, auth, routing, rate limiting |
+| **Auth Service**         | 3001 | ✅ Live    | Tenants, projects, API keys               |
+| **Scores Service**       | 3002 | 📋 Planned | Score updates and queries                 |
+| **Leaderboards Service** | 3003 | 📋 Planned | Leaderboard CRUD and rankings             |
+| **Worker Service**       | 3004 | 📋 Planned | Background jobs                           |
+| **Billing Service**      | 3005 | 📋 Planned | Usage tracking                            |
+| **Analytics Service**    | 3006 | 📋 Planned | Metrics and insights                      |
 
 ### Request Flow
 
@@ -88,6 +88,7 @@ pnpm service:gateway   # Start gateway
 pnpm build             # Build all packages
 pnpm lint              # Lint code
 pnpm format            # Format code
+pnpm format:check      # Check formatting (CI)
 ```
 
 ## 🔒 Security
