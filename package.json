@@ -20,7 +20,8 @@
     "infra:clean": "cd infra && docker compose down -v",
     "service:auth": "pnpm run --filter @ascend/auth-service dev",
     "service:gateway": "pnpm run --filter @ascend/gateway dev",
-    "service:scores": "pnpm run --filter @ascend/scores-service dev"
+    "service:scores": "pnpm run --filter @ascend/scores-service dev",
+    "service:leaderboards": "pnpm run --filter @ascend/leaderboards-service dev"
   },
   "keywords": [],
   "author": "",

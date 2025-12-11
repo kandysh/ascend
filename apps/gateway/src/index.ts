@@ -35,7 +35,11 @@ declare module 'fastify' {
 
 const envSchema = {
   type: 'object',
-  required: ['AUTH_SERVICE_URL'],
+  required: [
+    'AUTH_SERVICE_URL',
+    'SCORES_SERVICE_URL',
+    'LEADERBOARDS_SERVICE_URL',
+  ],
   properties: {
     PORT: {
       type: 'number',
@@ -46,11 +50,9 @@ const envSchema = {
     },
     SCORES_SERVICE_URL: {
       type: 'string',
-      default: 'http://localhost:3002',
     },
     LEADERBOARDS_SERVICE_URL: {
       type: 'string',
-      default: 'http://localhost:3003',
     },
     BILLING_SERVICE_URL: {
       type: 'string',

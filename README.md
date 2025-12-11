@@ -45,7 +45,7 @@ pnpm service:gateway   # Terminal 2 - Port 3000
 | **Gateway**              | 3000 | ✅ Live    | Entry point, auth, routing, rate limiting |
 | **Auth Service**         | 3001 | ✅ Live    | Tenants, projects, API keys               |
 | **Scores Service**       | 3002 | ✅ Live    | Score updates and queries                 |
-| **Leaderboards Service** | 3003 | 📋 Planned | Leaderboard CRUD and rankings             |
+| **Leaderboards Service** | 3003 | ✅ Live    | Leaderboard CRUD and rankings             |
 | **Worker Service**       | 3004 | 📋 Planned | Background jobs                           |
 | **Billing Service**      | 3005 | 📋 Planned | Usage tracking                            |
 | **Analytics Service**    | 3006 | 📋 Planned | Metrics and insights                      |
@@ -81,9 +81,10 @@ pnpm db:migrate        # Run migrations
 pnpm db:studio         # Open Drizzle Studio (GUI)
 
 # Services
-pnpm service:auth      # Start auth service
-pnpm service:gateway   # Start gateway
-pnpm service:scores    # Start scores service
+pnpm service:auth          # Start auth service
+pnpm service:gateway       # Start gateway
+pnpm service:scores        # Start scores service
+pnpm service:leaderboards  # Start leaderboards service
 
 # Development
 pnpm build             # Build all packages
@@ -156,7 +157,7 @@ curl http://localhost:3000/leaderboards/test \
 - [x] **Phase 1** - Auth & Tenant System
 - [x] **Phase 2** - API Gateway
 - [x] **Phase 3** - Scores Service
-- [ ] **Phase 4** - Leaderboards Service
+- [x] **Phase 4** - Leaderboards Service
 - [ ] **Phase 5+** - Worker, Billing, Analytics, Dashboard
 
 See [Roadmap](./docs/roadmap.md) for details.

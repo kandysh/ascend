@@ -41,11 +41,11 @@
 
 ## Phase 4 — Leaderboards Service (Day 8–10)
 
-- [ ] Scaffold service
-- [ ] Create Postgres tables: leaderboards, seasons
-- [ ] Implement CRUD: create/update/delete leaderboard
-- [ ] Add season/TTL policies
-- [ ] Publish events: leaderboard.created, leaderboard.deleted
+- [x] Scaffold service
+- [x] Create Postgres tables: leaderboards, seasons
+- [x] Implement CRUD: create/update/delete leaderboard
+- [x] Add season/TTL policies
+- [x] Publish events: leaderboard.created, leaderboard.deleted
 
 ## Phase 5 — Worker & Event Bus (Day 10–13)
 

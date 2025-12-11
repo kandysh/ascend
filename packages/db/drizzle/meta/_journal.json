@@ -8,6 +8,13 @@
       "when": 1765441910935,
       "tag": "0000_rare_maggott",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765464136839,
+      "tag": "0001_nervous_speedball",
+      "breakpoints": true
     }
   ]
 }
